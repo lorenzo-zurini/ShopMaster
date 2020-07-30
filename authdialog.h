@@ -37,12 +37,8 @@ private slots:
 
     void on_CancelButton_clicked();
 
-    void RequestComplete();
-
 private:
     Ui::AuthDialog *ui;
-    QNetworkAccessManager *AuthNetworkManager;
-    QUrl APIUrl;
 };
 
 #endif // AUTHDIALOG_H

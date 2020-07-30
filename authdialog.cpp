@@ -1,14 +1,13 @@
 #include "authdialog.h"
 #include "ui_authdialog.h"
 
+
 AuthDialog::AuthDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AuthDialog)
 {
     ui->setupUi(this);
     ui->PasswordTextInput->setEchoMode(QLineEdit::Password);
-    AuthNetworkManager = new QNetworkAccessManager();
-    connect(AuthNetworkManager, &QNetworkAccessManager::finished, this, &AuthDialog::RequestComplete);
 }
 
 AuthDialog::~AuthDialog()

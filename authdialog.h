@@ -4,6 +4,21 @@
 #include <QMainWindow>
 #include <QDialog>
 #include <QDebug>
+#include <QString>
+#include <QByteArray>
+#include <QBitArray>
+#include <QCoreApplication>
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkRequest>
+#include <QtNetwork/QNetworkReply>
+#include <QFile>
+#include <QUrl>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonValue>
+#include <QStringList>
 
 namespace Ui {
 class AuthDialog;
@@ -22,8 +37,12 @@ private slots:
 
     void on_CancelButton_clicked();
 
+    void RequestComplete();
+
 private:
     Ui::AuthDialog *ui;
+    QNetworkAccessManager *AuthNetworkManager;
+    QUrl APIUrl;
 };
 
 #endif // AUTHDIALOG_H

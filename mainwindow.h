@@ -3,6 +3,18 @@
 
 #include <QMainWindow>
 #include <authdialog.h>
+#include <QString>
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkRequest>
+#include <QtNetwork/QNetworkReply>
+#include <QFile>
+#include <QUrl>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonValue>
+#include <QStringList>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

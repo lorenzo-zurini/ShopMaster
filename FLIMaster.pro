@@ -23,6 +23,7 @@ HEADERS += \
     mainwindow.h
 
 FORMS += \
+    authdialog.ui \
     mainwindow.ui
 
 # Default rules for deployment.

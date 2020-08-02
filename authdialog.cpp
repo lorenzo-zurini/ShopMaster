@@ -33,21 +33,26 @@ void AuthDialog::on_LoginButton_clicked()
     //The post request is constructed and then executed.
     QUrl ApiUrl;
     ApiUrl.setUrl("https://marketplace.emag.ro/api-3/order/read");
-    ApiUrl.setUserName(ui->LoginTextInput->text());
-    ApiUrl.setPassword(ui->PasswordTextInput->text());
+
+    QByteArray PostData;
+    QUrlQuery Params;
+    Params.addQueryItem("code", ui->APICodeTextInput->text());
+    Params.addQueryItem("username", ui->LoginTextInput->text());
+    Params.addQueryItem("data", "currentPage=1&itemsPerPage=100");
+    Params.addQueryItem("hash", EncryptedString);
+    PostData.append(Params.toString());
     QNetworkRequest ApiRequest;
     ApiRequest.setUrl(ApiUrl);
-    AuthManager->get(ApiRequest);
+    ApiRequest.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("0"));
+    AuthManager->post(ApiRequest, PostData);
+    qDebug()<< PostData;
 
-    //QByteArray PostData;
-    //QUrlQuery Params;
-    //Params.addQueryItem("code", ui->APICodeTextInput->text());
-    //Params.addQueryItem("username", ui->LoginTextInput->text());
-    //Params.addQueryItem("data", "currentPage=1&itemsPerPage=100");
-    //Params.addQueryItem("hash", EncryptedString);
-    //PostData.append(Params.toString());
-    //AuthManager->post(QNetworkRequest(QUrl("https://marketplace.emag.ro/api-3/order/read")), PostData);
-    //qDebug()<< PostData;
+    //QNetworkRequest GetRequest;
+    //ApiUrl.setUserName(ui->LoginTextInput->text());
+    //ApiUrl.setPassword(ui->PasswordTextInput->text());
+    //GetRequest.setUrl(ApiUrl);
+    //AuthManager->get(GetRequest);
+
 
 }
 
@@ -58,5 +63,5 @@ void AuthDialog::on_CancelButton_clicked()
 
 void AuthDialog::RequestComplete(QNetworkReply *AuthReply)
 {
-    qDebug() << AuthReply;
+    qDebug() << AuthReply->readAll();
 }

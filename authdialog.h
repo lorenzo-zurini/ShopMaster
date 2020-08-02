@@ -20,6 +20,9 @@
 #include <QJsonObject>
 #include <QJsonValue>
 #include <QStringList>
+#include <QHttpMultiPart>
+#include <QHttpPart>
+#include <QUrlQuery>
 
 namespace Ui {
 class AuthDialog;

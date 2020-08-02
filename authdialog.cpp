@@ -8,6 +8,8 @@ AuthDialog::AuthDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->PasswordTextInput->setEchoMode(QLineEdit::Password);
+    AuthManager = new QNetworkAccessManager();
+    connect(AuthManager, &QNetworkAccessManager::finished, this, &AuthDialog::RequestComplete);
 }
 
 AuthDialog::~AuthDialog()
@@ -28,8 +30,6 @@ void AuthDialog::on_LoginButton_clicked()
     QString EncryptedString = UnencryptedString.toUtf8().toBase64();
     qDebug() << EncryptedString;
 
-
-
 }
 
 void AuthDialog::on_CancelButton_clicked()
@@ -37,7 +37,7 @@ void AuthDialog::on_CancelButton_clicked()
  this->close();
 }
 
-void RequestComplete()
+void AuthDialog::RequestComplete(QNetworkReply *reply)
 {
     qDebug() << "Surprise Buttsex";
 }

@@ -2,6 +2,7 @@
 #define AUTHDIALOG_H
 
 #include <QMainWindow>
+#include <QObject>
 #include <QDialog>
 #include <QDebug>
 #include <QString>
@@ -34,11 +35,12 @@ public:
 
 private slots:
     void on_LoginButton_clicked();
-
-    void on_CancelButton_clicked();
+    void on_CancelButton_clicked();   
+    void RequestComplete(QNetworkReply *reply);
 
 private:
     Ui::AuthDialog *ui;
+    QNetworkAccessManager *AuthManager;
 };
 
 #endif // AUTHDIALOG_H

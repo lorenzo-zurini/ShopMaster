@@ -8,8 +8,6 @@ AuthDialog::AuthDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->PasswordTextInput->setEchoMode(QLineEdit::Password);
-
-
 }
 
 AuthDialog::~AuthDialog()
@@ -34,25 +32,19 @@ void AuthDialog::on_LoginButton_clicked()
     QUrl ApiUrl;
     ApiUrl.setUrl("https://marketplace.emag.ro/api-3/order/read");
 
-    QByteArray PostData;
-    QUrlQuery Params;
-    Params.addQueryItem("code", ui->APICodeTextInput->text());
-    Params.addQueryItem("username", ui->LoginTextInput->text());
-    Params.addQueryItem("data", "currentPage=1&itemsPerPage=100");
-    Params.addQueryItem("hash", EncryptedString);
-    PostData.append(Params.toString());
+    QByteArray AuthData;
+    AuthData.append(EncryptedString);
+    AuthData.prepend("Basic ");
+
     QNetworkRequest ApiRequest;
     ApiRequest.setUrl(ApiUrl);
-    ApiRequest.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("0"));
+    ApiRequest.setRawHeader("Authorization", AuthData);
+    ApiRequest.setRawHeader("Content-Type", "application/json");
+
+    QByteArray PostData;
+    PostData.append("currentPage=1&itemsPerPage=10");
     AuthManager->post(ApiRequest, PostData);
     qDebug()<< PostData;
-
-    //QNetworkRequest GetRequest;
-    //ApiUrl.setUserName(ui->LoginTextInput->text());
-    //ApiUrl.setPassword(ui->PasswordTextInput->text());
-    //GetRequest.setUrl(ApiUrl);
-    //AuthManager->get(GetRequest);
-
 
 }
 

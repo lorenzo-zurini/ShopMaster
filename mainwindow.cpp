@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
 }
 
 MainWindow::~MainWindow()
@@ -21,4 +22,9 @@ void MainWindow::on_pushButton_clicked()
     AuthDialog AuthDialogInUse;
     AuthDialogInUse.setModal(true);
     AuthDialogInUse.exec();
+}
+
+void MainWindow::on_actionPreluare_eMAG_triggered()
+{
+    qDebug() << "Orders window here (picture in picture)";
 }

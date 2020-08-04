@@ -8,6 +8,7 @@ AuthDialog::AuthDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->PasswordTextInput->setEchoMode(QLineEdit::Password);
+    this->setWindowTitle("Autentificare eMAG");
 }
 
 AuthDialog::~AuthDialog()
@@ -30,7 +31,8 @@ void AuthDialog::on_LoginButton_clicked()
 
     //The post request is constructed and then executed.
     QUrl ApiUrl;
-    ApiUrl.setUrl("https://marketplace.emag.ro/api-3/order/read");
+    //ApiUrl.setUrl("https://marketplace.emag.ro/api-3/order/read");
+    ApiUrl.setUrl("https://marketplace.emag.ro/api-3");
 
     QByteArray AuthData;
     AuthData.append(EncryptedString);

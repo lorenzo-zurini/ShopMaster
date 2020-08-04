@@ -15,6 +15,8 @@
 #include <QJsonObject>
 #include <QJsonValue>
 #include <QStringList>
+#include <QMenuBar>
+#include <QStatusBar>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -30,6 +32,8 @@ public:
 
 private slots:
     void on_pushButton_clicked();
+
+    void on_actionPreluare_eMAG_triggered();
 
 private:
     Ui::MainWindow *ui;

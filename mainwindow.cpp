@@ -16,15 +16,14 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::on_actionPreluare_eMAG_triggered()
+{
+    qDebug() << "Orders window here (picture in picture)";
+}
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_actionAutentificare_eMAG_triggered()
 {
     AuthDialog AuthDialogInUse;
     AuthDialogInUse.setModal(true);
     AuthDialogInUse.exec();
-}
-
-void MainWindow::on_actionPreluare_eMAG_triggered()
-{
-    qDebug() << "Orders window here (picture in picture)";
 }

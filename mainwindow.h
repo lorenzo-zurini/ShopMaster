@@ -31,9 +31,10 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_pushButton_clicked();
 
     void on_actionPreluare_eMAG_triggered();
+
+    void on_actionAutentificare_eMAG_triggered();
 
 private:
     Ui::MainWindow *ui;

@@ -38,17 +38,14 @@
    <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QMdiArea" name="mdiArea">
     <property name="geometry">
      <rect>
-      <x>320</x>
-      <y>290</y>
-      <width>75</width>
-      <height>23</height>
+      <x>9</x>
+      <y>-1</y>
+      <width>781</width>
+      <height>581</height>
      </rect>
-    </property>
-    <property name="text">
-     <string>Open Auth</string>
     </property>
    </widget>
   </widget>
@@ -67,12 +64,24 @@
     </property>
     <addaction name="actionPreluare_eMAG"/>
    </widget>
+   <widget class="QMenu" name="menuAutentificare">
+    <property name="title">
+     <string>Autentificare</string>
+    </property>
+    <addaction name="actionAutentificare_eMAG"/>
+   </widget>
    <addaction name="menuComenzi"/>
+   <addaction name="menuAutentificare"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionPreluare_eMAG">
    <property name="text">
     <string>Preluare eMAG</string>
+   </property>
+  </action>
+  <action name="actionAutentificare_eMAG">
+   <property name="text">
+    <string>Autentificare eMAG</string>
    </property>
   </action>
  </widget>

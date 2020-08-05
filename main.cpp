@@ -6,7 +6,6 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
-    w.showFullScreen();
+    w.showMaximized();
     return a.exec();
-    QThread::sleep(100);
 }

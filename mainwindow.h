@@ -38,9 +38,12 @@ private slots:
 
     void on_actionAutentificare_eMAG_triggered();
 
+    void on_AuthRequestComplete(QNetworkReply * AuthReply);
+
     EMAGMdiChild * CreateMdiChild();
 
 private:
     Ui::MainWindow *ui;
+    QNetworkAccessManager *AuthManager;
 };
 #endif // MAINWINDOW_H

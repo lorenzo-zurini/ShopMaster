@@ -23,6 +23,7 @@
 #include <QHttpMultiPart>
 #include <QHttpPart>
 #include <QUrlQuery>
+#include <QMessageBox>
 
 namespace Ui {
 class AuthDialog;
@@ -35,6 +36,7 @@ class AuthDialog : public QDialog
 public:
     explicit AuthDialog(QWidget *parent = nullptr);
     ~AuthDialog();
+    QString Hash;
 
 private slots:
     void on_LoginButton_clicked();
@@ -44,6 +46,7 @@ private slots:
 private:
     Ui::AuthDialog *ui;
     QNetworkAccessManager *AuthManager;
+
 };
 
 #endif // AUTHDIALOG_H

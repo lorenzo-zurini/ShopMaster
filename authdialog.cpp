@@ -23,7 +23,7 @@ void AuthDialog::on_LoginButton_clicked()
     UnencryptedString.push_back(ui->LoginTextInput->text());
     UnencryptedString.push_back(":");
     UnencryptedString.push_back(ui->PasswordTextInput->text());
-    QString EncryptedString = UnencryptedString.toUtf8().toBase64();
+    AuthDialog::Hash = UnencryptedString.toUtf8().toBase64();
 
     //The NetworkManager class is initialised and the signal is connected to our slot function.
     AuthManager = new QNetworkAccessManager();
@@ -32,10 +32,9 @@ void AuthDialog::on_LoginButton_clicked()
     //The post request is constructed and then executed.
     QUrl ApiUrl;
     ApiUrl.setUrl("https://marketplace.emag.ro/api-3/order/read");
-    //ApiUrl.setUrl("https://marketplace.emag.ro/api-3");
 
     QByteArray AuthData;
-    AuthData.append(EncryptedString);
+    AuthData.append(Hash);
     AuthData.prepend("Basic ");
 
     QNetworkRequest ApiRequest;
@@ -52,10 +51,30 @@ void AuthDialog::on_LoginButton_clicked()
 
 void AuthDialog::on_CancelButton_clicked()
 {
- QCoreApplication::quit();
+ this->close();
 }
 
 void AuthDialog::RequestComplete(QNetworkReply *AuthReply)
 {
     qDebug() << AuthReply->readAll();
+
+    if(AuthReply->hasRawHeader("X-User-Id"))
+    {
+        QFile CredentialStore(QCoreApplication::applicationDirPath() + "/CredentialStore.bin");
+
+        if(CredentialStore.open(QIODevice::WriteOnly | QIODevice::Text))
+            {
+            CredentialStore.write(AuthDialog::Hash.toUtf8());
+            CredentialStore.close();
+            }
+        this->close();
+    }
+    else
+    {
+        QMessageBox WrongCredentials;
+        WrongCredentials.setText("Nigga you fucked up");
+        WrongCredentials.exec();
+    }
+
+
 }

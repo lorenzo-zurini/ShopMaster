@@ -39,6 +39,18 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="MainWindowLayout">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <item row="0" column="0">
      <widget class="QMdiArea" name="mdiArea">
       <property name="enabled">
@@ -47,13 +59,6 @@
       <property name="autoFillBackground">
        <bool>true</bool>
       </property>
-      <widget class="QWidget" name="OrdersWindow">
-       <layout class="QGridLayout" name="OrdersWindowLayout">
-        <item row="0" column="0">
-         <widget class="QTableWidget" name="tableWidget"/>
-        </item>
-       </layout>
-      </widget>
      </widget>
     </item>
    </layout>

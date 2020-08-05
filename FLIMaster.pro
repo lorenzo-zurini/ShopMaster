@@ -19,11 +19,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     authdialog.cpp \
+    emagmdichild.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     authdialog.h \
+    emagmdichild.h \
     mainwindow.h
 
 FORMS += \

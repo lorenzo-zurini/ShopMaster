@@ -18,6 +18,8 @@ MainWindow::~MainWindow()
 void MainWindow::on_actionPreluare_eMAG_triggered()
 {
     qDebug() << "Orders window here (picture in picture)";
+    EMAGMdiChild EMAGMdiChildInUse;
+
 }
 
 void MainWindow::on_actionAutentificare_eMAG_triggered()

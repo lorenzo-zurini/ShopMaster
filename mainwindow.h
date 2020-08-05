@@ -17,6 +17,7 @@
 #include <QStringList>
 #include <QMenuBar>
 #include <QStatusBar>
+#include <emagmdichild.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -29,9 +30,6 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
-    int ScreenX;
-    int ScreenY;
 
 private slots:
 

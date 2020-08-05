@@ -44,7 +44,7 @@ void AuthDialog::on_LoginButton_clicked()
     ApiRequest.setRawHeader("Content-Type", "application/json");
 
     QByteArray PostData;
-    PostData.append("currentPage=1&itemsPerPage=10");
+    PostData.append("currentPage=1&itemsPerPage=20");
     AuthManager->post(ApiRequest, PostData);
     qDebug()<< PostData;
 

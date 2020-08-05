@@ -2,5 +2,5 @@
 
 EMAGMdiChild::EMAGMdiChild()
 {
- qDebug() << "COAIECEEASTA";
+ setAttribute(Qt::WA_DeleteOnClose);
 }

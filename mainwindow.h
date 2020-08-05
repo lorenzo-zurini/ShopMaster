@@ -31,11 +31,14 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+
 private slots:
 
     void on_actionPreluare_eMAG_triggered();
 
     void on_actionAutentificare_eMAG_triggered();
+
+    EMAGMdiChild * CreateMdiChild();
 
 private:
     Ui::MainWindow *ui;

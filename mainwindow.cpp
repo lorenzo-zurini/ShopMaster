@@ -17,9 +17,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionPreluare_eMAG_triggered()
 {
-    qDebug() << "Orders window here (picture in picture)";
-    EMAGMdiChild EMAGMdiChildInUse;
-
+    EMAGMdiChild * EMAGMdiChildInUse = MainWindow::CreateMdiChild();
+    EMAGMdiChildInUse->show();
 }
 
 void MainWindow::on_actionAutentificare_eMAG_triggered()
@@ -27,4 +26,11 @@ void MainWindow::on_actionAutentificare_eMAG_triggered()
     AuthDialog AuthDialogInUse;
     AuthDialogInUse.setModal(true);
     AuthDialogInUse.exec();
+}
+
+EMAGMdiChild * MainWindow::CreateMdiChild()
+{
+    EMAGMdiChild * child = new EMAGMdiChild;
+    ui->mdiArea->addSubWindow(child);
+    return child;
 }

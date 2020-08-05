@@ -30,6 +30,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    int ScreenX;
+    int ScreenY;
+
 private slots:
 
     void on_actionPreluare_eMAG_triggered();

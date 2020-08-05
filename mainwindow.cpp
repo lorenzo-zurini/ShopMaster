@@ -53,9 +53,18 @@ void MainWindow::on_actionPreluare_eMAG_triggered()
 
 void MainWindow::on_AuthRequestComplete(QNetworkReply * AuthReply)
 {
-    qDebug() << AuthReply->readAll();
-    EMAGMdiChild * EMAGMdiChildInUse = MainWindow::CreateMdiChild();
-    EMAGMdiChildInUse->show();
+    if(!AuthReply->hasRawHeader("X-User-Id"))
+    {
+        QMessageBox WrongCredentials;
+        WrongCredentials.setText("Este necesara autentificarea pe platforma eMAG");
+        WrongCredentials.exec();
+    }
+    else
+    {
+        qDebug() << AuthReply->readAll();
+        EMAGMdiChild * EMAGMdiChildInUse = MainWindow::CreateMdiChild();
+        EMAGMdiChildInUse->show();
+    }
 }
 
 void MainWindow::on_actionAutentificare_eMAG_triggered()

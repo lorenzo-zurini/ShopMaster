@@ -72,7 +72,7 @@ void AuthDialog::RequestComplete(QNetworkReply *AuthReply)
     else
     {
         QMessageBox WrongCredentials;
-        WrongCredentials.setText("Nigga you fucked up");
+        WrongCredentials.setText("Date de autentificare gresite.");
         WrongCredentials.exec();
     }
 

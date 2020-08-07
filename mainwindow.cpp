@@ -8,6 +8,12 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    //The code below makes the mainwindow default to screen resolution.
+    //The pixel height of the taskbar should be subtracted from the height so there's no overlap.
+    //Good enough for now, will implement into subwindows too.
+    QScreen *MainScreen = QGuiApplication::primaryScreen();
+    QRect MainScreenAvailableGeometry = MainScreen->availableGeometry();
+    this->resize(MainScreenAvailableGeometry.width(), MainScreenAvailableGeometry.height());
 }
 
 MainWindow::~MainWindow()

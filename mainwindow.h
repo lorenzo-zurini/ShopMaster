@@ -17,6 +17,7 @@
 #include <QStringList>
 #include <QMenuBar>
 #include <QStatusBar>
+#include <QScreen>
 #include <emagmdichild.h>
 
 QT_BEGIN_NAMESPACE

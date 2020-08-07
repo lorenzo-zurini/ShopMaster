@@ -1,14 +1,22 @@
 #ifndef EMAGMDICHILD_H
 #define EMAGMDICHILD_H
-#include <QTableWidget>
-#include <QDebug>
 
+#include <QWidget>
 
+namespace Ui {
+class EMAGMdiChild;
+}
 
-class EMAGMdiChild : public QTableWidget
+class EMAGMdiChild : public QWidget
 {
+    Q_OBJECT
+
 public:
-    EMAGMdiChild();
+    explicit EMAGMdiChild(QWidget *parent = nullptr);
+    ~EMAGMdiChild();
+
+private:
+    Ui::EMAGMdiChild *ui;
 };
 
 #endif // EMAGMDICHILD_H

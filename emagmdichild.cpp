@@ -1,10 +1,14 @@
 #include "emagmdichild.h"
+#include "ui_emagmdichild.h"
 
-EMAGMdiChild::EMAGMdiChild() : QTableWidget(30, 10)
-  //SECO PLS EXPLAIN HOW THIS ABOVE WORKS CAUSE I DIDNT UNDERSTAND EVEN THOUGH I SMILED AND NODDED
+EMAGMdiChild::EMAGMdiChild(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::EMAGMdiChild)
 {
- setAttribute(Qt::WA_DeleteOnClose);
- QTableWidgetItem PuleSule;
- QVariant Pullaaa("caca");
- PuleSule.setData(1, Pullaaa);
+    ui->setupUi(this);
+}
+
+EMAGMdiChild::~EMAGMdiChild()
+{
+    delete ui;
 }

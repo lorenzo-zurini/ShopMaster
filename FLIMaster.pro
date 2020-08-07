@@ -30,6 +30,7 @@ HEADERS += \
 
 FORMS += \
     authdialog.ui \
+    emagmdichild.ui \
     mainwindow.ui
 
 # Default rules for deployment.

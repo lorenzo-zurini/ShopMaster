@@ -73,7 +73,7 @@ void MainWindow::on_AuthRequestComplete(QNetworkReply * AuthReply)
         qDebug() << AuthReply->readAll();
         //We create an MdiChild by using this function:
         EMAGMdiChild * EMAGMdiChildInUse = MainWindow::CreateMdiChild();
-        EMAGMdiChildInUse->showMaximized();
+        EMAGMdiChildInUse->show();
     }
 }
 

@@ -18,18 +18,19 @@ AuthDialog::~AuthDialog()
 
 void AuthDialog::on_LoginButton_clicked()
 {
-    //The inputs are polled and the hash is generated.
+    //When the user logs in, AuthWindow sends a post request to eMAG servers to verify the credentials.
+    //The post request is identical to the one in MainWindow::on_actionPreluare_eMAG_triggered so refer to that.
+    //Nothing is done with the data returned. Only the credentials are checked for validity.
+
     QString UnencryptedString;
     UnencryptedString.push_back(ui->LoginTextInput->text());
     UnencryptedString.push_back(":");
     UnencryptedString.push_back(ui->PasswordTextInput->text());
     AuthDialog::Hash = UnencryptedString.toUtf8().toBase64();
 
-    //The NetworkManager class is initialised and the signal is connected to our slot function.
     AuthManager = new QNetworkAccessManager();
     connect(AuthManager, &QNetworkAccessManager::finished, this, &AuthDialog::RequestComplete);
 
-    //The post request is constructed and then executed.
     QUrl ApiUrl;
     ApiUrl.setUrl("https://marketplace.emag.ro/api-3/order/read");
 
@@ -58,6 +59,7 @@ void AuthDialog::RequestComplete(QNetworkReply *AuthReply)
 {
     qDebug() << AuthReply->readAll();
 
+    //The credentials are checked for validity and if correct, the hash is saved in a file to be used in MainWindow.
     if(AuthReply->hasRawHeader("X-User-Id"))
     {
         QFile CredentialStore(QCoreApplication::applicationDirPath() + "/CredentialStore.bin");

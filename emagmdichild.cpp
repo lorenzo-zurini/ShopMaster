@@ -60,22 +60,21 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
     //The connection between the QNetworkAccessManager and this function is handled by the Signal/Slot System.
     //We also check if the reply has the "X-User-Id" header which is only present if the credentials are right.
     //If they are right, we launch a mdi subwindow using the EMAGMdiChild class.
-    qDebug().noquote() << AuthReply->readAll();
     if(!AuthReply->hasRawHeader("X-User-Id"))
     {
         QMessageBox WrongCredentials;
-        WrongCredentials.setText("Este necesara autentificarea pe platforma eMAG");
+        WrongCredentials.setText("Eroare de autentificare eMAG.");
         WrongCredentials.exec();
     }
     else
     {
-        qDebug().noquote() << AuthReply->readAll();
-
-        //Here the JSON that we recieve as a reply is parsed into individual orders that are saved to files.
-        QJsonDocument OrdersPageJson = QJsonDocument::fromJson(AuthReply->readAll());
-        QJsonObject OrdersPageRootObject = OrdersPageJson.object();
-        QJsonArray OrdersPageArray = OrdersPageRootObject["results"].toArray();
-        QDir EMAGOrdersDirectory;
-        qDebug() << OrdersPageArray.count();
+        QJsonArray OrdersArray = QJsonDocument::fromJson(AuthReply->readAll()).object()["results"].toArray();
+        for (int i = 0; i < OrdersArray.size(); i++)
+        {
+            //FIND A BETTER WAY TO DO THIS!!!!
+            qDebug() << OrdersArray.at(i).toObject().toVariantMap().value("id").toString();
+            //qDebug() << OrdersArray.at(i).toObject();
+            //qDebug() << i;
+        }
     }
 }

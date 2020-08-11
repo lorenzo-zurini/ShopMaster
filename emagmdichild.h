@@ -39,6 +39,8 @@ private:
     QNetworkAccessManager *AuthManager;
 
     void GetEMAGOrders();
+
+    QDir EMAGOrdersDirectory;
 };
 
 #endif // EMAGMDICHILD_H

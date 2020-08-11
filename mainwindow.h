@@ -3,11 +3,13 @@
 
 #include <QMainWindow>
 #include <authdialog.h>
+#include <emagmdichild.h>
 #include <QString>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
 #include <QFile>
+#include <QDir>
 #include <QUrl>
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -18,7 +20,6 @@
 #include <QMenuBar>
 #include <QStatusBar>
 #include <QScreen>
-#include <emagmdichild.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -39,12 +40,9 @@ private slots:
 
     void on_actionAutentificare_eMAG_triggered();
 
-    void on_AuthRequestComplete(QNetworkReply * AuthReply);
-
     EMAGMdiChild * CreateMdiChild();
 
 private:
     Ui::MainWindow *ui;
-    QNetworkAccessManager *AuthManager;
 };
 #endif // MAINWINDOW_H

@@ -2,6 +2,21 @@
 #define EMAGMDICHILD_H
 
 #include <QWidget>
+#include <QString>
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkRequest>
+#include <QtNetwork/QNetworkReply>
+#include <QFile>
+#include <QDir>
+#include <QUrl>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonValue>
+#include <QStringList>
+#include <QMessageBox>
+#include <QDebug>
 
 namespace Ui {
 class EMAGMdiChild;
@@ -15,8 +30,15 @@ public:
     explicit EMAGMdiChild(QWidget *parent = nullptr);
     ~EMAGMdiChild();
 
+private slots:
+    void on_AuthRequestComplete(QNetworkReply * AuthReply);
+
 private:
     Ui::EMAGMdiChild *ui;
+
+    QNetworkAccessManager *AuthManager;
+
+    void GetEMAGOrders();
 };
 
 #endif // EMAGMDICHILD_H

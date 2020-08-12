@@ -73,25 +73,29 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
         QJsonArray OrdersArray = QJsonDocument::fromJson(AuthReply->readAll()).object()["results"].toArray();
         for (int i = 0; i < OrdersArray.size(); i++)
         {
-            QFile * OrderFile = new QFile;
-            OrderFile->setFileName(EMAGOrdersDirectory.path() + "/" + OrdersArray.at(i).toObject()["id"].toString() + ".order");
-            if(OrderFile->open(QIODevice::WriteOnly | QIODevice::Text))
-                {
-                OrderFile->write("Contact" + OrdersArray.at(i).toObject()["customer"].toObject()["shipping_contact"].toString().toUtf8());
-                OrderFile->close();
-                }
-            qDebug().noquote().nospace() << "DATE LIVRARE:";
-            qDebug().noquote().nospace() << "Nume: " << OrdersArray.at(i).toObject()["customer"].toObject()["shipping_contact"].toString();
-            qDebug().noquote().nospace() << "Telefon: " << OrdersArray.at(i).toObject()["customer"].toObject()["shipping_phone"].toString();
-            qDebug().noquote().nospace() << "Nota-Observatii: Comanda nr. " << OrdersArray.at(i).toObject()["id"].toInt() << " din data " << OrdersArray.at(i).toObject()["date"].toString();
-            qDebug().noquote().nospace() << "Judet: " << OrdersArray.at(i).toObject()["customer"].toObject()["shipping_suburb"].toString();
-            qDebug().noquote().nospace() << "Localitate: " <<OrdersArray.at(i).toObject()["customer"].toObject()["shipping_city"].toString();
-            qDebug().noquote().nospace() << "Adresa: " << OrdersArray.at(i).toObject()["customer"].toObject()["shipping_street"].toString()<< "\n";
-            qDebug().noquote().nospace() << "DATE FACTURARE:";
-            qDebug().noquote().nospace() << "Nume: " << OrdersArray.at(i).toObject()["customer"].toObject()["billing_name"].toString();
-            qDebug().noquote().nospace() << "Judet: " << OrdersArray.at(i).toObject()["customer"].toObject()["billing_suburb"].toString();
-            qDebug().noquote().nospace() << "Localitate, Adresa: " << OrdersArray.at(i).toObject()["customer"].toObject()["billing_city"].toString() << ", " << OrdersArray.at(i).toObject()["customer"].toObject()["billing_street"].toString();
-            qDebug().noquote().nospace() << "Tara: " << OrdersArray.at(i).toObject()["customer"].toObject()["billing_country"].toString() << "\n" << "\n";
+            //THIS NEEDS TO BE CHANGED FOR MODULARITY
+            //WE NEED TO COME UP WITH AN UNIVERSAL FORMAT FOR ORDERS
+            //AND USE THAT WHEN SAVING ORDERS
+            QSettings* OrderFile = new QSettings(EMAGOrdersDirectory.path() + "/" + QString::number(OrdersArray.at(i).toObject()["id"].toInt()) + ".order", QSettings::IniFormat);
+            OrderFile->beginGroup("ORDER_DATA");
+            OrderFile->setValue("ID", QString::number(OrdersArray.at(i).toObject()["id"].toInt()));
+            OrderFile->setValue("DATE", OrdersArray.at(i).toObject()["date"].toString());
+            OrderFile->endGroup();
+            OrderFile->beginGroup("DELIVERY_DATA");
+            OrderFile->setValue("NAME", OrdersArray.at(i).toObject()["customer"].toObject()["shipping_contact"].toString());
+            OrderFile->setValue("PHONE", OrdersArray.at(i).toObject()["customer"].toObject()["shipping_phone"].toString());
+            OrderFile->setValue("FLI-NOTA-OBSERVATII", "Comanda nr. " + QString::number(OrdersArray.at(i).toObject()["id"].toInt()) + " din data " + OrdersArray.at(i).toObject()["date"].toString());
+            OrderFile->setValue("JUDET", OrdersArray.at(i).toObject()["customer"].toObject()["shipping_suburb"].toString());
+            OrderFile->setValue("LOCALITATE", OrdersArray.at(i).toObject()["customer"].toObject()["shipping_city"].toString());
+            OrderFile->setValue("ADRESA", OrdersArray.at(i).toObject()["customer"].toObject()["shipping_street"].toString());
+            OrderFile->endGroup();
+            OrderFile->beginGroup("DATE_FACTURARE");
+            //AICI TREBUIE IMPLEMENTATA SI O OPTIUNE PENTRU PERSOANE JURIDICE, CU COD CIF SI NR. REG. COM.
+            OrderFile->setValue("NUME", OrdersArray.at(i).toObject()["customer"].toObject()["billing_name"].toString());
+            OrderFile->setValue("JUDET", OrdersArray.at(i).toObject()["customer"].toObject()["billing_suburb"].toString());
+            OrderFile->setValue("FLI-LOCALITATE-ADRESA", OrdersArray.at(i).toObject()["customer"].toObject()["billing_city"].toString() + ", " + OrdersArray.at(i).toObject()["customer"].toObject()["billing_street"].toString());
+            OrderFile->setValue("TARA", OrdersArray.at(i).toObject()["customer"].toObject()["billing_country"].toString());
+            OrderFile->sync();
         }
     }
 }

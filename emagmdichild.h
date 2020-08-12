@@ -17,6 +17,7 @@
 #include <QStringList>
 #include <QMessageBox>
 #include <QDebug>
+#include <QSettings>
 
 namespace Ui {
 class EMAGMdiChild;

@@ -5,6 +5,8 @@ EMAGMdiChild::EMAGMdiChild(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::EMAGMdiChild)
 {
+    EMAGOrdersDirectory.setPath(QCoreApplication::applicationDirPath() + "/Orders/eMAG");
+    EMAGOrdersDirectory.mkpath(EMAGOrdersDirectory.path());
     EMAGMdiChild::GetEMAGOrders();
     ui->setupUi(this);
 }
@@ -71,10 +73,25 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
         QJsonArray OrdersArray = QJsonDocument::fromJson(AuthReply->readAll()).object()["results"].toArray();
         for (int i = 0; i < OrdersArray.size(); i++)
         {
-            //FIND A BETTER WAY TO DO THIS!!!!
-            qDebug() << OrdersArray.at(i).toObject().toVariantMap().value("id").toString();
-            //qDebug() << OrdersArray.at(i).toObject();
-            //qDebug() << i;
+            QFile * OrderFile = new QFile;
+            OrderFile->setFileName(EMAGOrdersDirectory.path() + "/" + OrdersArray.at(i).toObject()["id"].toString() + ".order");
+            if(OrderFile->open(QIODevice::WriteOnly | QIODevice::Text))
+                {
+                OrderFile->write("Contact" + OrdersArray.at(i).toObject()["customer"].toObject()["shipping_contact"].toString().toUtf8());
+                OrderFile->close();
+                }
+            qDebug().noquote().nospace() << "DATE LIVRARE:";
+            qDebug().noquote().nospace() << "Nume: " << OrdersArray.at(i).toObject()["customer"].toObject()["shipping_contact"].toString();
+            qDebug().noquote().nospace() << "Telefon: " << OrdersArray.at(i).toObject()["customer"].toObject()["shipping_phone"].toString();
+            qDebug().noquote().nospace() << "Nota-Observatii: Comanda nr. " << OrdersArray.at(i).toObject()["id"].toInt() << " din data " << OrdersArray.at(i).toObject()["date"].toString();
+            qDebug().noquote().nospace() << "Judet: " << OrdersArray.at(i).toObject()["customer"].toObject()["shipping_suburb"].toString();
+            qDebug().noquote().nospace() << "Localitate: " <<OrdersArray.at(i).toObject()["customer"].toObject()["shipping_city"].toString();
+            qDebug().noquote().nospace() << "Adresa: " << OrdersArray.at(i).toObject()["customer"].toObject()["shipping_street"].toString()<< "\n";
+            qDebug().noquote().nospace() << "DATE FACTURARE:";
+            qDebug().noquote().nospace() << "Nume: " << OrdersArray.at(i).toObject()["customer"].toObject()["billing_name"].toString();
+            qDebug().noquote().nospace() << "Judet: " << OrdersArray.at(i).toObject()["customer"].toObject()["billing_suburb"].toString();
+            qDebug().noquote().nospace() << "Localitate, Adresa: " << OrdersArray.at(i).toObject()["customer"].toObject()["billing_city"].toString() << ", " << OrdersArray.at(i).toObject()["customer"].toObject()["billing_street"].toString();
+            qDebug().noquote().nospace() << "Tara: " << OrdersArray.at(i).toObject()["customer"].toObject()["billing_country"].toString() << "\n" << "\n";
         }
     }
 }

@@ -76,6 +76,7 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
             //THIS NEEDS TO BE CHANGED FOR MODULARITY
             //WE NEED TO COME UP WITH AN UNIVERSAL FORMAT FOR ORDERS
             //AND USE THAT WHEN SAVING ORDERS
+            //AND PASS THE ORDER TO THE BACKEND MODULE (CUSTOM FOR EACH CLIENT)
             QSettings* OrderFile = new QSettings(EMAGOrdersDirectory.path() + "/" + QString::number(OrdersArray.at(i).toObject()["id"].toInt()) + ".order", QSettings::IniFormat);
             OrderFile->beginGroup("ORDER_DATA");
             OrderFile->setValue("ID", QString::number(OrdersArray.at(i).toObject()["id"].toInt()));
@@ -89,13 +90,23 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
             OrderFile->setValue("LOCALITATE", OrdersArray.at(i).toObject()["customer"].toObject()["shipping_city"].toString());
             OrderFile->setValue("ADRESA", OrdersArray.at(i).toObject()["customer"].toObject()["shipping_street"].toString());
             OrderFile->endGroup();
-            OrderFile->beginGroup("DATE_FACTURARE");
+            OrderFile->beginGroup("BILLING_DATA");
             //AICI TREBUIE IMPLEMENTATA SI O OPTIUNE PENTRU PERSOANE JURIDICE, CU COD CIF SI NR. REG. COM.
             OrderFile->setValue("NUME", OrdersArray.at(i).toObject()["customer"].toObject()["billing_name"].toString());
             OrderFile->setValue("JUDET", OrdersArray.at(i).toObject()["customer"].toObject()["billing_suburb"].toString());
             OrderFile->setValue("FLI-LOCALITATE-ADRESA", OrdersArray.at(i).toObject()["customer"].toObject()["billing_city"].toString() + ", " + OrdersArray.at(i).toObject()["customer"].toObject()["billing_street"].toString());
             OrderFile->setValue("TARA", OrdersArray.at(i).toObject()["customer"].toObject()["billing_country"].toString());
+            OrderFile->endGroup();
+            for (int j=0; j < OrdersArray.at(i).toObject()["products"].toArray().size(); j++)
+            {
+                OrderFile->beginGroup("PRODUCT_" + QString::number(j + 1));
+                OrderFile->setValue("PRODUCT_ID", OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["part_number"].toString());
+                OrderFile->setValue("SALE_PRICE", OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["sale_price"].toString());
+                OrderFile->setValue("QUANTITY", QString::number(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["quantity"].toInt()));
+                OrderFile->endGroup();
+            }
             OrderFile->sync();
+            //REMOVE THIS DATA FROM MEMORY SOMEHOW SO AS TO NOT USE TOO MUCH MEMORY
         }
     }
 }

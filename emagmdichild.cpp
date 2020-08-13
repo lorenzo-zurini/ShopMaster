@@ -50,11 +50,11 @@ void EMAGMdiChild::GetEMAGOrders()
 
     //The data body of the post request is constructed here (doesn´t appear to work yet).
     QByteArray PostData;
-    PostData.append("currentPage=1&itemsPerPage=!0");
+    PostData.append("currentPage=1&itemsPerPage=10");
 
     //The request is made and the data is printed to the debug console.
     AuthManager->post(ApiRequest, PostData);
-    qDebug()<< PostData;
+    qDebug() << PostData;
 }
 
 void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
@@ -78,7 +78,7 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
             //WE NEED TO COME UP WITH AN UNIVERSAL FORMAT FOR ORDERS
             //AND USE THAT WHEN SAVING ORDERS
             //AND PASS THE ORDER TO THE BACKEND MODULE (CUSTOM FOR EACH CLIENT)
-            QSettings* OrderFile = new QSettings(EMAGOrdersDirectory.path() + "/" + QString::number(OrdersArray.at(i).toObject()["id"].toInt()) + ".order", QSettings::IniFormat);
+            QSettings* OrderFile = new QSettings(EMAGOrdersDirectory.path() + "/" + OrdersArray.at(i).toObject()["date"].toString().left(4) + "/" + OrdersArray.at(i).toObject()["date"].toString().left(7).right(2) + "/" + OrdersArray.at(i).toObject()["date"].toString().left(10).right(2) + "/" + QString::number(OrdersArray.at(i).toObject()["id"].toInt()) + ".order", QSettings::IniFormat);
             OrderFile->beginGroup("ORDER_DATA");
             OrderFile->setValue("ID", QString::number(OrdersArray.at(i).toObject()["id"].toInt()));
             OrderFile->setValue("DATE", OrdersArray.at(i).toObject()["date"].toString());
@@ -115,5 +115,5 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
 
 void EMAGMdiChild::PopulateTable()
 {
-    qDebug() << "SomeString";
+
 }

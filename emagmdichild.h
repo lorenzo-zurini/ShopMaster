@@ -33,6 +33,8 @@ public:
 
 private slots:
     void on_AuthRequestComplete(QNetworkReply * AuthReply);
+    
+    void PopulateTable();
 
 private:
     Ui::EMAGMdiChild *ui;
@@ -42,6 +44,10 @@ private:
     void GetEMAGOrders();
 
     QDir EMAGOrdersDirectory;
+    
+signals:
+    void OrderGetComplete();
+    
 };
 
 #endif // EMAGMDICHILD_H

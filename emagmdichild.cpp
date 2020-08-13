@@ -7,6 +7,7 @@ EMAGMdiChild::EMAGMdiChild(QWidget *parent) :
 {
     EMAGOrdersDirectory.setPath(QCoreApplication::applicationDirPath() + "/Orders/eMAG");
     EMAGOrdersDirectory.mkpath(EMAGOrdersDirectory.path());
+    connect(this, &EMAGMdiChild::OrderGetComplete, this, &EMAGMdiChild::PopulateTable);
     EMAGMdiChild::GetEMAGOrders();
     ui->setupUi(this);
 }
@@ -49,7 +50,7 @@ void EMAGMdiChild::GetEMAGOrders()
 
     //The data body of the post request is constructed here (doesn´t appear to work yet).
     QByteArray PostData;
-    PostData.append("currentPage=1&itemsPerPage=20");
+    PostData.append("currentPage=1&itemsPerPage=!0");
 
     //The request is made and the data is printed to the debug console.
     AuthManager->post(ApiRequest, PostData);
@@ -108,5 +109,11 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
             OrderFile->sync();
             //REMOVE THIS DATA FROM MEMORY SOMEHOW SO AS TO NOT USE TOO MUCH MEMORY
         }
+        emit OrderGetComplete();
     }
+}
+
+void EMAGMdiChild::PopulateTable()
+{
+    qDebug() << "SomeString";
 }

@@ -10,8 +10,10 @@ EMAGMdiChild::EMAGMdiChild(QWidget *parent) :
     connect(this, &EMAGMdiChild::OrderGetComplete, this, &EMAGMdiChild::PopulateTable);
     EMAGMdiChild::GetEMAGOrders();
     QDate CurrentDate = QDate::currentDate();
+    //THE LINE BELOW MAKES THE PROGRAM CRASH. IT IS CORRECT ACCORDING TO ALL INTERNET SOURCES
+    //WHATAFAKIYAYOO
+    ui->OrderDateView->setDate(CurrentDate);
     qDebug() << CurrentDate;
-    ui->DateView->setDate(CurrentDate);
     ui->setupUi(this);
 }
 

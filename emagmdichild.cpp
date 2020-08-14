@@ -115,5 +115,21 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
 
 void EMAGMdiChild::PopulateTable()
 {
-
+    QDir CurrentDirectory;
+    QString MonthWithZero = QString::number(QDate::currentDate().month());
+    if (MonthWithZero.length() == 1)
+    {
+        MonthWithZero.prepend(QString::number(0));
+    }
+    QString DayWithZero = QString::number(QDate::currentDate().day());
+    if (DayWithZero.length() == 1)
+    {
+        DayWithZero.prepend(QString::number(0));
+    }
+    CurrentDirectory.setPath(EMAGOrdersDirectory.path() + "/" + QString::number(QDate::currentDate().year()) + "/" + MonthWithZero + "/" + DayWithZero);
+    qDebug() << CurrentDirectory.path();
+    foreach(QString filename, CurrentDirectory.entryList())
+    {
+        qDebug() << filename;
+    }
 }

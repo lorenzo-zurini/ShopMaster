@@ -36,6 +36,10 @@ private slots:
     
     void PopulateTable();
 
+    void on_PreviousDayButton_clicked();
+
+    void on_NextDayButton_clicked();
+
 private:
     Ui::EMAGMdiChild *ui;
 

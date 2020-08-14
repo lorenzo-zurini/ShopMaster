@@ -8,13 +8,13 @@ EMAGMdiChild::EMAGMdiChild(QWidget *parent) :
     EMAGOrdersDirectory.setPath(QCoreApplication::applicationDirPath() + "/Orders/eMAG");
     EMAGOrdersDirectory.mkpath(EMAGOrdersDirectory.path());
     connect(this, &EMAGMdiChild::OrderGetComplete, this, &EMAGMdiChild::PopulateTable);
+    EMAGMdiChild::CurrentDate = QDate::currentDate();
     EMAGMdiChild::GetEMAGOrders();
-    QDate CurrentDate = QDate::currentDate();
-    //THE LINE BELOW MAKES THE PROGRAM CRASH. IT IS CORRECT ACCORDING TO ALL INTERNET SOURCES
-    //WHATAFAKIYAYOO
-    ui->OrderDateView->setDate(CurrentDate);
-    qDebug() << CurrentDate;
+    qDebug() << EMAGMdiChild::CurrentDate;
+    //DO NOT CALL ANYTHING USING ui-> BEFORE THIS; IT WILL CRASH THE PROGRAM
+    //I DID THIS AND SPENT AN HOUR TRYING TO FIGURE IT OUT
     ui->setupUi(this);
+    ui->OrderDateView->setDate(EMAGMdiChild::CurrentDate);
 }
 
 EMAGMdiChild::~EMAGMdiChild()
@@ -120,22 +120,49 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
 
 void EMAGMdiChild::PopulateTable()
 {
+    ui->OrdersView->clear();
+    ui->OrderDetailsView->clear();
     QDir CurrentDirectory;
     //THE DATE IS DERIVED FROM THE CURRENTDATE VARIABLE AND ZEROES ARE ADDED IN ORDER TO BE COMPATIBLE WITH THE FOLDER STRUCTURE
-    QString MonthWithZero = QString::number(CurrentDate.month());
+    QString MonthWithZero = QString::number(EMAGMdiChild::CurrentDate.month());
     if (MonthWithZero.length() == 1)
     {
         MonthWithZero.prepend(QString::number(0));
     }
-    QString DayWithZero = QString::number(CurrentDate.day());
+
+    QString DayWithZero = QString::number(EMAGMdiChild::CurrentDate.day());
     if (DayWithZero.length() == 1)
     {
         DayWithZero.prepend(QString::number(0));
     }
-    CurrentDirectory.setPath(EMAGOrdersDirectory.path() + "/" + QString::number(CurrentDate.year()) + "/" + MonthWithZero + "/" + DayWithZero);
-    qDebug() << CurrentDirectory.path();
+
+    CurrentDirectory.setPath(EMAGOrdersDirectory.path() + "/" + QString::number(EMAGMdiChild::CurrentDate.year()) + "/" + MonthWithZero + "/" + DayWithZero);
+
+    ui->OrdersView->setRowCount(CurrentDirectory.count() - 2);
     foreach(QString filename, CurrentDirectory.entryList())
     {
-        qDebug() << filename;
+        if(filename != "." && filename != "..")
+        {
+            QSettings * OrderFile = new QSettings(CurrentDirectory.path() + "/" + filename);
+            QTableWidgetItem * ActiveTableItem = new QTableWidgetItem;
+            //FIX THIS FOR THE TABLE TO ACTUALLY DISPLAY STUFF
+            ActiveTableItem->setText(OrderFile->value("NAME").toString().toUtf8());
+            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 0, ActiveTableItem);
+            qDebug() << filename;
+        }
     }
+}
+    //SOMETHING FUCKY IS GOING ON HERE TOO, MORE DAYS ARE ADDED FOR SOME REASON.
+void EMAGMdiChild::on_PreviousDayButton_clicked()
+{
+    EMAGMdiChild::CurrentDate.setDate(EMAGMdiChild::CurrentDate.addDays(-1).year(), EMAGMdiChild::CurrentDate.addDays(-1).month(), EMAGMdiChild::CurrentDate.addDays(-1).day() );
+    ui->OrderDateView->setDate(EMAGMdiChild::CurrentDate.addDays(-1));
+    PopulateTable();
+}
+
+void EMAGMdiChild::on_NextDayButton_clicked()
+{
+    EMAGMdiChild::CurrentDate.setDate(EMAGMdiChild::CurrentDate.addDays(1).year(), EMAGMdiChild::CurrentDate.addDays(1).month(), EMAGMdiChild::CurrentDate.addDays(1).day() );
+    ui->OrderDateView->setDate(EMAGMdiChild::CurrentDate.addDays(1));
+    PopulateTable();
 }

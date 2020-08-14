@@ -44,6 +44,8 @@ private:
     void GetEMAGOrders();
 
     QDir EMAGOrdersDirectory;
+
+    QDate CurrentDate;
     
 signals:
     void OrderGetComplete();

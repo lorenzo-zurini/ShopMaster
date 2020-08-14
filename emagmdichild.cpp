@@ -9,6 +9,9 @@ EMAGMdiChild::EMAGMdiChild(QWidget *parent) :
     EMAGOrdersDirectory.mkpath(EMAGOrdersDirectory.path());
     connect(this, &EMAGMdiChild::OrderGetComplete, this, &EMAGMdiChild::PopulateTable);
     EMAGMdiChild::GetEMAGOrders();
+    QDate CurrentDate = QDate::currentDate();
+    qDebug() << CurrentDate;
+    ui->DateView->setDate(CurrentDate);
     ui->setupUi(this);
 }
 
@@ -116,17 +119,18 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
 void EMAGMdiChild::PopulateTable()
 {
     QDir CurrentDirectory;
-    QString MonthWithZero = QString::number(QDate::currentDate().month());
+    //THE DATE IS DERIVED FROM THE CURRENTDATE VARIABLE AND ZEROES ARE ADDED IN ORDER TO BE COMPATIBLE WITH THE FOLDER STRUCTURE
+    QString MonthWithZero = QString::number(CurrentDate.month());
     if (MonthWithZero.length() == 1)
     {
         MonthWithZero.prepend(QString::number(0));
     }
-    QString DayWithZero = QString::number(QDate::currentDate().day());
+    QString DayWithZero = QString::number(CurrentDate.day());
     if (DayWithZero.length() == 1)
     {
         DayWithZero.prepend(QString::number(0));
     }
-    CurrentDirectory.setPath(EMAGOrdersDirectory.path() + "/" + QString::number(QDate::currentDate().year()) + "/" + MonthWithZero + "/" + DayWithZero);
+    CurrentDirectory.setPath(EMAGOrdersDirectory.path() + "/" + QString::number(CurrentDate.year()) + "/" + MonthWithZero + "/" + DayWithZero);
     qDebug() << CurrentDirectory.path();
     foreach(QString filename, CurrentDirectory.entryList())
     {

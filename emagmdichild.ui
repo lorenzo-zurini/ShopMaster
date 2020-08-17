@@ -36,8 +36,58 @@
        <enum>QAbstractItemView::SelectRows</enum>
       </property>
       <property name="columnCount">
-       <number>10</number>
+       <number>20</number>
       </property>
+      <column>
+       <property name="text">
+        <string>ID Comanda</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Data</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Nume Contact</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Telefon</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Judet</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Localitate</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Nume Facturare</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Judet Livrare</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Localitate - Adresa</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Tara</string>
+       </property>
+      </column>
       <column/>
       <column/>
       <column/>

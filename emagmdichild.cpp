@@ -120,8 +120,7 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
 
 void EMAGMdiChild::PopulateTable()
 {
-    ui->OrdersView->clear();
-    ui->OrderDetailsView->clear();
+    ui->OrdersView->setRowCount(0);
     QDir CurrentDirectory;
     //THE DATE IS DERIVED FROM THE CURRENTDATE VARIABLE AND ZEROES ARE ADDED IN ORDER TO BE COMPATIBLE WITH THE FOLDER STRUCTURE
     QString MonthWithZero = QString::number(EMAGMdiChild::CurrentDate.month());
@@ -152,17 +151,17 @@ void EMAGMdiChild::PopulateTable()
         }
     }
 }
-    //SOMETHING FUCKY IS GOING ON HERE TOO, MORE DAYS ARE ADDED FOR SOME REASON.
+
 void EMAGMdiChild::on_PreviousDayButton_clicked()
 {
     EMAGMdiChild::CurrentDate.setDate(EMAGMdiChild::CurrentDate.addDays(-1).year(), EMAGMdiChild::CurrentDate.addDays(-1).month(), EMAGMdiChild::CurrentDate.addDays(-1).day() );
-    ui->OrderDateView->setDate(EMAGMdiChild::CurrentDate.addDays(-1));
+    ui->OrderDateView->setDate(EMAGMdiChild::CurrentDate);
     PopulateTable();
 }
 
 void EMAGMdiChild::on_NextDayButton_clicked()
 {
     EMAGMdiChild::CurrentDate.setDate(EMAGMdiChild::CurrentDate.addDays(1).year(), EMAGMdiChild::CurrentDate.addDays(1).month(), EMAGMdiChild::CurrentDate.addDays(1).day() );
-    ui->OrderDateView->setDate(EMAGMdiChild::CurrentDate.addDays(1));
+    ui->OrderDateView->setDate(EMAGMdiChild::CurrentDate);
     PopulateTable();
 }

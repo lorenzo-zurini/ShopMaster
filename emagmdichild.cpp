@@ -142,12 +142,10 @@ void EMAGMdiChild::PopulateTable()
     {
         if(filename != "." && filename != "..")
         {
-            QSettings * OrderFile = new QSettings(CurrentDirectory.path() + "/" + filename);
+            QSettings * OrderFile = new QSettings(CurrentDirectory.path() + "/" + filename, QSettings::IniFormat);
             QTableWidgetItem * ActiveTableItem = new QTableWidgetItem;
-            //FIX THIS FOR THE TABLE TO ACTUALLY DISPLAY STUFF
-            ActiveTableItem->setText(OrderFile->value("NAME").toString().toUtf8());
+            ActiveTableItem->setText(QString::number(OrderFile->value("ORDER_DATA/ID").toInt()));
             ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 0, ActiveTableItem);
-            qDebug() << filename;
         }
     }
 }
@@ -163,5 +161,11 @@ void EMAGMdiChild::on_NextDayButton_clicked()
 {
     EMAGMdiChild::CurrentDate.setDate(EMAGMdiChild::CurrentDate.addDays(1).year(), EMAGMdiChild::CurrentDate.addDays(1).month(), EMAGMdiChild::CurrentDate.addDays(1).day() );
     ui->OrderDateView->setDate(EMAGMdiChild::CurrentDate);
+    PopulateTable();
+}
+
+void EMAGMdiChild::on_OrderDateView_userDateChanged(const QDate &date)
+{
+    EMAGMdiChild::CurrentDate.setDate(date.year(), date.month(), date.day());
     PopulateTable();
 }

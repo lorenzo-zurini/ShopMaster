@@ -40,6 +40,8 @@ private slots:
 
     void on_NextDayButton_clicked();
 
+    void on_OrderDateView_userDateChanged(const QDate &date);
+
 private:
     Ui::EMAGMdiChild *ui;
 

@@ -34,13 +34,17 @@ public:
 private slots:
     void on_AuthRequestComplete(QNetworkReply * AuthReply);
     
-    void PopulateTable();
+    void PopulateOrderViewTable();
+
+    void PopulateOrderDetailsViewTable();
 
     void on_PreviousDayButton_clicked();
 
     void on_NextDayButton_clicked();
 
     void on_OrderDateView_userDateChanged(const QDate &date);
+
+    void on_OrdersView_itemSelectionChanged();
 
 private:
     Ui::EMAGMdiChild *ui;

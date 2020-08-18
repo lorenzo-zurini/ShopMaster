@@ -7,7 +7,7 @@ EMAGMdiChild::EMAGMdiChild(QWidget *parent) :
 {
     EMAGOrdersDirectory.setPath(QCoreApplication::applicationDirPath() + "/Orders/eMAG");
     EMAGOrdersDirectory.mkpath(EMAGOrdersDirectory.path());
-    connect(this, &EMAGMdiChild::OrderGetComplete, this, &EMAGMdiChild::PopulateTable);
+    connect(this, &EMAGMdiChild::OrderGetComplete, this, &EMAGMdiChild::PopulateOrderViewTable);
     EMAGMdiChild::CurrentDate = QDate::currentDate();
     EMAGMdiChild::GetEMAGOrders();
     qDebug() << EMAGMdiChild::CurrentDate;
@@ -15,6 +15,8 @@ EMAGMdiChild::EMAGMdiChild(QWidget *parent) :
     //I DID THIS AND SPENT AN HOUR TRYING TO FIGURE IT OUT
     ui->setupUi(this);
     ui->OrderDateView->setDate(EMAGMdiChild::CurrentDate);
+    ui->OrdersView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->OrderDetailsView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 
 EMAGMdiChild::~EMAGMdiChild()
@@ -83,26 +85,35 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
             //WE NEED TO COME UP WITH AN UNIVERSAL FORMAT FOR ORDERS
             //AND USE THAT WHEN SAVING ORDERS
             //AND PASS THE ORDER TO THE BACKEND MODULE (CUSTOM FOR EACH CLIENT)
-            QSettings* OrderFile = new QSettings(EMAGOrdersDirectory.path() + "/" + OrdersArray.at(i).toObject()["date"].toString().left(4) + "/" + OrdersArray.at(i).toObject()["date"].toString().left(7).right(2) + "/" + OrdersArray.at(i).toObject()["date"].toString().left(10).right(2) + "/" + QString::number(OrdersArray.at(i).toObject()["id"].toInt()) + ".order", QSettings::IniFormat);
+            QSettings* OrderFile = new QSettings(EMAGOrdersDirectory.path() + "/"
+                    + OrdersArray.at(i).toObject()["date"].toString().left(4) + "/"
+                    + OrdersArray.at(i).toObject()["date"].toString().left(7).right(2) + "/"
+                    + OrdersArray.at(i).toObject()["date"].toString().left(10).right(2) + "/"
+                    + QString::number(OrdersArray.at(i).toObject()["id"].toInt()) + ".order", QSettings::IniFormat);
+
             OrderFile->beginGroup("ORDER_DATA");
             OrderFile->setValue("ID", QString::number(OrdersArray.at(i).toObject()["id"].toInt()));
             OrderFile->setValue("DATE", OrdersArray.at(i).toObject()["date"].toString());
             OrderFile->endGroup();
-            OrderFile->beginGroup("DELIVERY_DATA");
-            OrderFile->setValue("NAME", OrdersArray.at(i).toObject()["customer"].toObject()["shipping_contact"].toString());
-            OrderFile->setValue("PHONE", OrdersArray.at(i).toObject()["customer"].toObject()["shipping_phone"].toString());
-            OrderFile->setValue("FLI-NOTA-OBSERVATII", "Comanda nr. " + QString::number(OrdersArray.at(i).toObject()["id"].toInt()) + " din data " + OrdersArray.at(i).toObject()["date"].toString());
-            OrderFile->setValue("JUDET", OrdersArray.at(i).toObject()["customer"].toObject()["shipping_suburb"].toString());
-            OrderFile->setValue("LOCALITATE", OrdersArray.at(i).toObject()["customer"].toObject()["shipping_city"].toString());
-            OrderFile->setValue("ADRESA", OrdersArray.at(i).toObject()["customer"].toObject()["shipping_street"].toString());
+
+            OrderFile->beginGroup("CONTACT_DATA");
+            OrderFile->setValue("CONTACT_NAME", OrdersArray.at(i).toObject()["customer"].toObject()["shipping_contact"].toString());
+            OrderFile->setValue("CONTACT_PHONE", OrdersArray.at(i).toObject()["customer"].toObject()["shipping_phone"].toString());
+            OrderFile->setValue("CONTACT_COUNTRY", OrdersArray.at(i).toObject()["customer"].toObject()["shipping_country"].toString());
+            OrderFile->setValue("CONTACT_COUNTY", OrdersArray.at(i).toObject()["customer"].toObject()["shipping_suburb"].toString());
+            OrderFile->setValue("CONTACT_CITY", OrdersArray.at(i).toObject()["customer"].toObject()["shipping_city"].toString());
+            OrderFile->setValue("CONTACT_ADRESS", OrdersArray.at(i).toObject()["customer"].toObject()["shipping_street"].toString());
             OrderFile->endGroup();
+
             OrderFile->beginGroup("BILLING_DATA");
             //AICI TREBUIE IMPLEMENTATA SI O OPTIUNE PENTRU PERSOANE JURIDICE, CU COD CIF SI NR. REG. COM.
-            OrderFile->setValue("NUME", OrdersArray.at(i).toObject()["customer"].toObject()["billing_name"].toString());
-            OrderFile->setValue("JUDET", OrdersArray.at(i).toObject()["customer"].toObject()["billing_suburb"].toString());
-            OrderFile->setValue("FLI-LOCALITATE-ADRESA", OrdersArray.at(i).toObject()["customer"].toObject()["billing_city"].toString() + ", " + OrdersArray.at(i).toObject()["customer"].toObject()["billing_street"].toString());
-            OrderFile->setValue("TARA", OrdersArray.at(i).toObject()["customer"].toObject()["billing_country"].toString());
+            OrderFile->setValue("BILLING_NAME", OrdersArray.at(i).toObject()["customer"].toObject()["billing_name"].toString());
+            OrderFile->setValue("BILLING_COUNTRY", OrdersArray.at(i).toObject()["customer"].toObject()["billing_country"].toString());
+            OrderFile->setValue("BILLING_COUNTY", OrdersArray.at(i).toObject()["customer"].toObject()["billing_suburb"].toString());
+            OrderFile->setValue("BILLING_CITY", OrdersArray.at(i).toObject()["customer"].toObject()["billing_city"].toString());
+            OrderFile->setValue("BILLING_ADRESS", OrdersArray.at(i).toObject()["customer"].toObject()["billing_street"].toString());
             OrderFile->endGroup();
+
             for (int j=0; j < OrdersArray.at(i).toObject()["products"].toArray().size(); j++)
             {
                 OrderFile->beginGroup("PRODUCT_" + QString::number(j + 1));
@@ -118,8 +129,10 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
     }
 }
 
-void EMAGMdiChild::PopulateTable()
+void EMAGMdiChild::PopulateOrderViewTable()
 {
+    ui->OrdersView->clearSelection();
+    ui->OrderDetailsView->clearSelection();
     ui->OrdersView->setRowCount(0);
     QDir CurrentDirectory;
     //THE DATE IS DERIVED FROM THE CURRENTDATE VARIABLE AND ZEROES ARE ADDED IN ORDER TO BE COMPATIBLE WITH THE FOLDER STRUCTURE
@@ -140,32 +153,95 @@ void EMAGMdiChild::PopulateTable()
     ui->OrdersView->setRowCount(CurrentDirectory.count() - 2);
     foreach(QString filename, CurrentDirectory.entryList())
     {
-        if(filename != "." && filename != "..")
+        if(filename != "." && filename != ".." && CurrentDirectory.entryList().count() > 2)
         {
             QSettings * OrderFile = new QSettings(CurrentDirectory.path() + "/" + filename, QSettings::IniFormat);
-            QTableWidgetItem * ActiveTableItem = new QTableWidgetItem;
-            ActiveTableItem->setText(QString::number(OrderFile->value("ORDER_DATA/ID").toInt()));
-            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 0, ActiveTableItem);
+            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 0, new QTableWidgetItem(QString::number(OrderFile->value("ORDER_DATA/ID").toInt())));
+            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 1, new QTableWidgetItem(OrderFile->value("ORDER_DATA/DATE").toString()));
+            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 2, new QTableWidgetItem(OrderFile->value("CONTACT_DATA/CONTACT_NAME").toString()));
+            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 3, new QTableWidgetItem(OrderFile->value("CONTACT_DATA/CONTACT_PHONE").toString()));
+            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 4, new QTableWidgetItem(OrderFile->value("CONTACT_DATA/CONTACT_COUNTRY").toString()));
+            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 5, new QTableWidgetItem(OrderFile->value("CONTACT_DATA/CONTACT_COUNTY").toString()));
+            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 6, new QTableWidgetItem(OrderFile->value("CONTACT_DATA/CONTACT_CITY").toString()));
+            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 7, new QTableWidgetItem(OrderFile->value("CONTACT_DATA/CONTACT_ADRESS").toString()));
+            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 8, new QTableWidgetItem(OrderFile->value("BILLING_DATA/BILLING_NAME").toString()));
+            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 9, new QTableWidgetItem(OrderFile->value("BILLING_DATA/BILLING_COUNTRY").toString()));
+            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 10, new QTableWidgetItem(OrderFile->value("BILLING_DATA/BILLING_COUNTY").toString()));
+            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 11, new QTableWidgetItem(OrderFile->value("BILLING_DATA/BILLING_CITY").toString()));
+            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 12, new QTableWidgetItem(OrderFile->value("BILLING_DATA/BILLING_ADRESS").toString()));
+            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 13, new QTableWidgetItem(OrderFile->value("BILLING_DATA/BILLING_COMPANY_NAME").toString()));
+            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 14, new QTableWidgetItem(OrderFile->value("BILLING_DATA/BILLING_CIF").toString()));
+            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 15, new QTableWidgetItem(OrderFile->value("BILLING_DATA/BILLING_NRRC").toString()));
+            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 16, new QTableWidgetItem(OrderFile->value("BILLING_DATA/BILLING_ACCOUNT").toString()));
+        }
+    }
+}
+
+void EMAGMdiChild::PopulateOrderDetailsViewTable()
+{
+    ui->OrderDetailsView->setRowCount(0);
+    QDir CurrentDirectory;
+    QString MonthWithZero = QString::number(EMAGMdiChild::CurrentDate.month());
+    if (MonthWithZero.length() == 1)
+    {
+        MonthWithZero.prepend(QString::number(0));
+    }
+
+    QString DayWithZero = QString::number(EMAGMdiChild::CurrentDate.day());
+    if (DayWithZero.length() == 1)
+    {
+        DayWithZero.prepend(QString::number(0));
+    }
+
+    CurrentDirectory.setPath(EMAGOrdersDirectory.path() + "/" + QString::number(EMAGMdiChild::CurrentDate.year()) + "/" + MonthWithZero + "/" + DayWithZero);
+    //WE NEED TO CHECK IF SOMETHING IS ACTUALLY SELECTED IN THE MAIN TABLE
+    //OTHERWISE THE WHOLE PROGRAM WILL CRASH
+    if (ui->OrdersView->selectedItems().count() != 0)
+        {
+        QSettings * OrderFile = new QSettings(CurrentDirectory.path() + "/" + ui->OrdersView->item(ui->OrdersView->selectedRanges().first().topRow(), 0)->text() + ".order", QSettings::IniFormat);
+        foreach(QString group, OrderFile->childGroups())
+            {
+            if(group != "ORDER_DATA" && group != "BILLING_DATA" && group != "CONTACT_DATA" && group.left(8) == "PRODUCT_")
+                {
+                ui->OrderDetailsView->setRowCount(ui->OrderDetailsView->rowCount() + 1);
+                ui->OrderDetailsView->setItem(group.mid(group.indexOf("_"), group.length()).toInt(), 0, new QTableWidgetItem(OrderFile->value(group + "/PRODUCT_ID").toString()));
+                ui->OrderDetailsView->setItem(group.mid(group.indexOf("_"), group.length()).toInt(), 1, new QTableWidgetItem(OrderFile->value(group + "/QUANTITY").toString()));
+                ui->OrderDetailsView->setItem(group.mid(group.indexOf("_"), group.length()).toInt(), 2, new QTableWidgetItem(OrderFile->value(group + "/SALE_PRICE").toString()));
+            }
         }
     }
 }
 
 void EMAGMdiChild::on_PreviousDayButton_clicked()
 {
+    ui->OrdersView->clearSelection();
+    ui->OrderDetailsView->clearSelection();
+    ui->OrderDetailsView->setRowCount(0);
     EMAGMdiChild::CurrentDate.setDate(EMAGMdiChild::CurrentDate.addDays(-1).year(), EMAGMdiChild::CurrentDate.addDays(-1).month(), EMAGMdiChild::CurrentDate.addDays(-1).day() );
     ui->OrderDateView->setDate(EMAGMdiChild::CurrentDate);
-    PopulateTable();
+    PopulateOrderViewTable();
 }
 
 void EMAGMdiChild::on_NextDayButton_clicked()
 {
+    ui->OrdersView->clearSelection();
+    ui->OrderDetailsView->clearSelection();
+    ui->OrderDetailsView->setRowCount(0);
     EMAGMdiChild::CurrentDate.setDate(EMAGMdiChild::CurrentDate.addDays(1).year(), EMAGMdiChild::CurrentDate.addDays(1).month(), EMAGMdiChild::CurrentDate.addDays(1).day() );
     ui->OrderDateView->setDate(EMAGMdiChild::CurrentDate);
-    PopulateTable();
+    PopulateOrderViewTable();
 }
 
 void EMAGMdiChild::on_OrderDateView_userDateChanged(const QDate &date)
 {
+    ui->OrdersView->clearSelection();
+    ui->OrderDetailsView->clearSelection();
+    ui->OrderDetailsView->setRowCount(0);
     EMAGMdiChild::CurrentDate.setDate(date.year(), date.month(), date.day());
-    PopulateTable();
+    PopulateOrderViewTable();
+}
+
+void EMAGMdiChild::on_OrdersView_itemSelectionChanged()
+{
+    PopulateOrderDetailsViewTable();
 }

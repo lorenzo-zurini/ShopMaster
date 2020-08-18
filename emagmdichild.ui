@@ -26,18 +26,42 @@
       <enum>Qt::Vertical</enum>
      </property>
      <widget class="QTableWidget" name="OrdersView">
+      <property name="sizeAdjustPolicy">
+       <enum>QAbstractScrollArea::AdjustIgnored</enum>
+      </property>
       <property name="editTriggers">
        <set>QAbstractItemView::NoEditTriggers</set>
       </property>
       <property name="alternatingRowColors">
        <bool>true</bool>
       </property>
+      <property name="selectionMode">
+       <enum>QAbstractItemView::SingleSelection</enum>
+      </property>
       <property name="selectionBehavior">
        <enum>QAbstractItemView::SelectRows</enum>
       </property>
-      <property name="columnCount">
-       <number>20</number>
+      <property name="verticalScrollMode">
+       <enum>QAbstractItemView::ScrollPerPixel</enum>
       </property>
+      <property name="horizontalScrollMode">
+       <enum>QAbstractItemView::ScrollPerPixel</enum>
+      </property>
+      <property name="sortingEnabled">
+       <bool>true</bool>
+      </property>
+      <property name="columnCount">
+       <number>17</number>
+      </property>
+      <attribute name="horizontalHeaderCascadingSectionResizes">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="horizontalHeaderStretchLastSection">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="verticalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
       <column>
        <property name="text">
         <string>ID Comanda</string>
@@ -55,22 +79,12 @@
       </column>
       <column>
        <property name="text">
-        <string>Telefon</string>
+        <string>Telefon Livrare</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>Judet</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Localitate</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Nume Facturare</string>
+        <string>Tara Livrare</string>
        </property>
       </column>
       <column>
@@ -80,32 +94,85 @@
       </column>
       <column>
        <property name="text">
-        <string>Localitate - Adresa</string>
+        <string>Localitate Livrare</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>Tara</string>
+        <string>Adresa Livrare</string>
        </property>
       </column>
-      <column/>
-      <column/>
-      <column/>
-      <column/>
-      <column/>
-      <column/>
-      <column/>
-      <column/>
-      <column/>
-      <column/>
+      <column>
+       <property name="text">
+        <string>Nume Facturare</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Tara Facturare</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Judet Facturare</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Localitate Facturare</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Adresa Facturare</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Nume Societate</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>New Column</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Cod C.I.F.</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Cont</string>
+       </property>
+      </column>
      </widget>
      <widget class="QTableWidget" name="OrderDetailsView">
+      <property name="selectionMode">
+       <enum>QAbstractItemView::SingleSelection</enum>
+      </property>
+      <property name="selectionBehavior">
+       <enum>QAbstractItemView::SelectRows</enum>
+      </property>
       <property name="columnCount">
        <number>3</number>
       </property>
-      <column/>
-      <column/>
-      <column/>
+      <column>
+       <property name="text">
+        <string>ID Produs</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Cantitate</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Pret Vanzare</string>
+       </property>
+      </column>
      </widget>
     </widget>
    </item>

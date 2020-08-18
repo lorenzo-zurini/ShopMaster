@@ -5,16 +5,31 @@ EMAGMdiChild::EMAGMdiChild(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::EMAGMdiChild)
 {
+    //WE SET THE PATH OF THE ORDERS DIRECTORY ASS A CLASS VARIABLE AS IT IS USED BY MANY THINGS
     EMAGOrdersDirectory.setPath(QCoreApplication::applicationDirPath() + "/Orders/eMAG");
+
+    //WE MAKE SURE TO CREATE THE DIRECTORY OR ELSE THOSE MANY THINGS WOULD FAIL
     EMAGOrdersDirectory.mkpath(EMAGOrdersDirectory.path());
+
+    //WE LINK THE END OF THE PROCESSING OF THE NETWORK REQUEST INTO FILES TO THE POPULATION OF THE TABLE
+    //THIS WILL BE CHANGED AND THE ACTUAL ORDER GETTING AND THE TABLE VIEW WILL BE SEPARATED
     connect(this, &EMAGMdiChild::OrderGetComplete, this, &EMAGMdiChild::PopulateOrderViewTable);
+
+    //WE SET THE CURRENT DATE AS A CLASS VARIABLE AS IT IS INTEGRAL TO THE DIRECTORY STRUCTURE
     EMAGMdiChild::CurrentDate = QDate::currentDate();
+
+    //WE CALL THE GER ORDERS FUNCTION HERE FOR NOW
+    //IT SHOULD BE MOVED OUT OF THE CONSTRUCTOR AND ONTO A BUTTON ONCE IT IS SEPARATED FROM THE TABLE VIEW
     EMAGMdiChild::GetEMAGOrders();
-    qDebug() << EMAGMdiChild::CurrentDate;
+
     //DO NOT CALL ANYTHING USING ui-> BEFORE THIS; IT WILL CRASH THE PROGRAM
     //I DID THIS AND SPENT AN HOUR TRYING TO FIGURE IT OUT
     ui->setupUi(this);
+
+    //WE INITIALIZE THE WINDOW BY SETTING THE DATE OF THE DATE WIDGET TO THE CURRENT ONE
     ui->OrderDateView->setDate(EMAGMdiChild::CurrentDate);
+
+    //WE SET THE RESIZE POLICY FOR THE TABLES
     ui->OrdersView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->OrderDetailsView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
@@ -81,16 +96,17 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
         QJsonArray OrdersArray = QJsonDocument::fromJson(AuthReply->readAll()).object()["results"].toArray();
         for (int i = 0; i < OrdersArray.size(); i++)
         {
-            //THIS NEEDS TO BE CHANGED FOR MODULARITY
-            //WE NEED TO COME UP WITH AN UNIVERSAL FORMAT FOR ORDERS
-            //AND USE THAT WHEN SAVING ORDERS
-            //AND PASS THE ORDER TO THE BACKEND MODULE (CUSTOM FOR EACH CLIENT)
+            //WE DECLARE A NEW FILE FOR EACH ORDER, USING THE QSETTINGS CLASS
+            //WE USE THE DIRECTORY STRUCTURE AS A MEANS OF CATEGORIZATION
+            //WE BUILD THE PATH FOR EACH FILE FROM THE DATE CONTAINED IN THE JSON
+            //WE USE THE ID CONTAINED IN THE JSON AS THE FILENAME
             QSettings* OrderFile = new QSettings(EMAGOrdersDirectory.path() + "/"
                     + OrdersArray.at(i).toObject()["date"].toString().left(4) + "/"
                     + OrdersArray.at(i).toObject()["date"].toString().left(7).right(2) + "/"
                     + OrdersArray.at(i).toObject()["date"].toString().left(10).right(2) + "/"
                     + QString::number(OrdersArray.at(i).toObject()["id"].toInt()) + ".order", QSettings::IniFormat);
 
+            //HERE WE READ THE JSON REPLY AND PARSE THE DATA INTO OUR UNIVERSAL ORDER FORMAT
             OrderFile->beginGroup("ORDER_DATA");
             OrderFile->setValue("ID", QString::number(OrdersArray.at(i).toObject()["id"].toInt()));
             OrderFile->setValue("DATE", OrdersArray.at(i).toObject()["date"].toString());
@@ -114,6 +130,7 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
             OrderFile->setValue("BILLING_ADRESS", OrdersArray.at(i).toObject()["customer"].toObject()["billing_street"].toString());
             OrderFile->endGroup();
 
+            //HERE WE RECURSIVELY PARSE THE PRODUCTS IN THE ORDER INTO OUR FORMAT
             for (int j=0; j < OrdersArray.at(i).toObject()["products"].toArray().size(); j++)
             {
                 OrderFile->beginGroup("PRODUCT_" + QString::number(j + 1));
@@ -125,16 +142,22 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
             OrderFile->sync();
             //REMOVE THIS DATA FROM MEMORY SOMEHOW SO AS TO NOT USE TOO MUCH MEMORY
         }
+        //ONCE ALL FILES ARE SAVED, WE EMIT THIS SIGNAL
         emit OrderGetComplete();
     }
 }
 
 void EMAGMdiChild::PopulateOrderViewTable()
 {
+    //WE CLEAR THE TABLES BEFORE REPOPULATING THEM TO PREVENT DATA INTERFERENCE AND CRASHES
+    //AND ALSO BECAUSE IT MAKES SENSE IDK
     ui->OrdersView->clearSelection();
     ui->OrderDetailsView->clearSelection();
     ui->OrdersView->setRowCount(0);
+
+    //WE USE THE CURRENTDATE OR THE DATE SET BY THE USER TO DETERMINE WHAT DIRECTORY TO LOOK INTO FOR ORDERS SAVED PREVIOUSLY
     QDir CurrentDirectory;
+
     //THE DATE IS DERIVED FROM THE CURRENTDATE VARIABLE AND ZEROES ARE ADDED IN ORDER TO BE COMPATIBLE WITH THE FOLDER STRUCTURE
     QString MonthWithZero = QString::number(EMAGMdiChild::CurrentDate.month());
     if (MonthWithZero.length() == 1)
@@ -150,11 +173,14 @@ void EMAGMdiChild::PopulateOrderViewTable()
 
     CurrentDirectory.setPath(EMAGOrdersDirectory.path() + "/" + QString::number(EMAGMdiChild::CurrentDate.year()) + "/" + MonthWithZero + "/" + DayWithZero);
 
+    //WE SET THE ROW COUNT FOR THE TABLE AND ADD ALL THE ITEMS RECURSIVELY
+    //WE NEED TO SUBTRACT 2 BECAUSE THE FUNCTION LISTS "." and ".." AS SUBDIRECTORIES
     ui->OrdersView->setRowCount(CurrentDirectory.count() - 2);
     foreach(QString filename, CurrentDirectory.entryList())
     {
         if(filename != "." && filename != ".." && CurrentDirectory.entryList().count() > 2)
         {
+            //THIS LOOP ADDS ALL THE ITEMS TO THE TABLE. THE COORDINATES ARE DERIVED BY USING THE FILENAME AS AN ITERATOR BY FINDING IT IN THE DIRECTORY LIST
             QSettings * OrderFile = new QSettings(CurrentDirectory.path() + "/" + filename, QSettings::IniFormat);
             ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 0, new QTableWidgetItem(QString::number(OrderFile->value("ORDER_DATA/ID").toInt())));
             ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 1, new QTableWidgetItem(OrderFile->value("ORDER_DATA/DATE").toString()));
@@ -196,6 +222,8 @@ void EMAGMdiChild::PopulateOrderDetailsViewTable()
     CurrentDirectory.setPath(EMAGOrdersDirectory.path() + "/" + QString::number(EMAGMdiChild::CurrentDate.year()) + "/" + MonthWithZero + "/" + DayWithZero);
     //WE NEED TO CHECK IF SOMETHING IS ACTUALLY SELECTED IN THE MAIN TABLE
     //OTHERWISE THE WHOLE PROGRAM WILL CRASH
+
+    //ORDERS WITH MULTIPLE PRODUCTS DO NOT SHOW UP PROPERLY IN THE SECONDARY TABLE
     if (ui->OrdersView->selectedItems().count() != 0)
         {
         QSettings * OrderFile = new QSettings(CurrentDirectory.path() + "/" + ui->OrdersView->item(ui->OrdersView->selectedRanges().first().topRow(), 0)->text() + ".order", QSettings::IniFormat);

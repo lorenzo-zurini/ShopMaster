@@ -21,17 +21,20 @@ SOURCES += \
     authdialog.cpp \
     emagmdichild.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    ordereditform.cpp
 
 HEADERS += \
     authdialog.h \
     emagmdichild.h \
-    mainwindow.h
+    mainwindow.h \
+    ordereditform.h
 
 FORMS += \
     authdialog.ui \
     emagmdichild.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    ordereditform.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

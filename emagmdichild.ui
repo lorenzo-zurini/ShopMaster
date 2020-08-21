@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>640</width>
-    <height>480</height>
+    <width>831</width>
+    <height>548</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -134,7 +134,7 @@
       </column>
       <column>
        <property name="text">
-        <string>New Column</string>
+        <string>NR. Reg. Com.</string>
        </property>
       </column>
       <column>
@@ -230,6 +230,123 @@
       </property>
       <property name="calendarPopup">
        <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QToolButton" name="PrintOrderButton">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>0</y>
+        <width>70</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Print</string>
+      </property>
+     </widget>
+     <widget class="QToolButton" name="AWBButton">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>0</y>
+        <width>70</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>AWB</string>
+      </property>
+     </widget>
+     <widget class="QToolButton" name="InvoiceButton">
+      <property name="geometry">
+       <rect>
+        <x>450</x>
+        <y>0</y>
+        <width>70</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Factura</string>
+      </property>
+     </widget>
+     <widget class="QToolButton" name="ModifyOrderButton">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>0</y>
+        <width>70</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Modifica</string>
+      </property>
+     </widget>
+     <widget class="QToolButton" name="AutomationsButton">
+      <property name="geometry">
+       <rect>
+        <x>660</x>
+        <y>0</y>
+        <width>70</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Automatizari</string>
+      </property>
+     </widget>
+     <widget class="QToolButton" name="FinaliseOrderButton">
+      <property name="geometry">
+       <rect>
+        <x>520</x>
+        <y>0</y>
+        <width>70</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Trimite</string>
+      </property>
+     </widget>
+     <widget class="QToolButton" name="OrderGetButton">
+      <property name="geometry">
+       <rect>
+        <x>590</x>
+        <y>0</y>
+        <width>70</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Preluare</string>
+      </property>
+     </widget>
+     <widget class="QToolButton" name="DeleteOrderButton">
+      <property name="geometry">
+       <rect>
+        <x>730</x>
+        <y>0</y>
+        <width>70</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Sterge</string>
+      </property>
+     </widget>
+     <widget class="QToolButton" name="AcknowledgeOrderButton">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>0</y>
+        <width>70</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Finalizeaza</string>
       </property>
      </widget>
     </widget>

@@ -84,8 +84,17 @@
     </property>
     <addaction name="actionAutentificare_eMAG"/>
    </widget>
+   <widget class="QMenu" name="menuSetari">
+    <property name="title">
+     <string>Configurare</string>
+    </property>
+    <addaction name="actionConturi"/>
+    <addaction name="actionImprimante"/>
+    <addaction name="actionUtilizatori"/>
+   </widget>
    <addaction name="menuComenzi"/>
    <addaction name="menuAutentificare"/>
+   <addaction name="menuSetari"/>
   </widget>
   <action name="actionPreluare_eMAG">
    <property name="text">
@@ -95,6 +104,21 @@
   <action name="actionAutentificare_eMAG">
    <property name="text">
     <string>Autentificare eMAG</string>
+   </property>
+  </action>
+  <action name="actionConturi">
+   <property name="text">
+    <string>Conturi</string>
+   </property>
+  </action>
+  <action name="actionImprimante">
+   <property name="text">
+    <string>Imprimante</string>
+   </property>
+  </action>
+  <action name="actionUtilizatori">
+   <property name="text">
+    <string>Utilizatori</string>
    </property>
   </action>
  </widget>

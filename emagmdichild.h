@@ -46,6 +46,8 @@ private slots:
 
     void on_OrdersView_itemSelectionChanged();
 
+    void on_ModifyOrderButton_clicked();
+
 private:
     Ui::EMAGMdiChild *ui;
 
@@ -59,6 +61,8 @@ private:
     
 signals:
     void OrderGetComplete();
+
+    void OrderEdit(QString);
     
 };
 

@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <authdialog.h>
 #include <emagmdichild.h>
+#include <ordereditform.h>
 #include <QString>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
@@ -39,8 +40,13 @@ private slots:
 
     void on_actionAutentificare_eMAG_triggered();
 
-    EMAGMdiChild * CreateMdiChild();
+    void OrderEdit(const QString);
 
+private:
+
+    EMAGMdiChild * CreateEMAGMdiChild();
+
+    OrderEditForm * CreateOrderEditForm();
 
 private:
     Ui::MainWindow *ui;

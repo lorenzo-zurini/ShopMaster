@@ -273,3 +273,21 @@ void EMAGMdiChild::on_OrdersView_itemSelectionChanged()
 {
     PopulateOrderDetailsViewTable();
 }
+
+void EMAGMdiChild::on_ModifyOrderButton_clicked()
+{
+    //ADD AN IF FOR NO TABLE SELECTION TO AVOID CRASH
+    QString MonthWithZero = QString::number(EMAGMdiChild::CurrentDate.month());
+    if (MonthWithZero.length() == 1)
+    {
+        MonthWithZero.prepend(QString::number(0));
+    }
+
+    QString DayWithZero = QString::number(EMAGMdiChild::CurrentDate.day());
+    if (DayWithZero.length() == 1)
+    {
+        DayWithZero.prepend(QString::number(0));
+    }
+    QString OrderPath = (EMAGOrdersDirectory.path() + "/" + QString::number(EMAGMdiChild::CurrentDate.year()) + "/" + MonthWithZero + "/" + DayWithZero + "/" + ui->OrdersView->item(ui->OrdersView->selectedRanges().first().topRow(), 0)->text() + ".order");
+    emit OrderEdit(OrderPath);
+}

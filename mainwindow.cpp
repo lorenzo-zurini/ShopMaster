@@ -19,18 +19,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_actionPreluare_eMAG_triggered()
-{
-    //We create an MdiChild by using this function:
-    EMAGMdiChild * EMAGMdiChildInUse = MainWindow::CreateMdiChild();
-    QRect MainScreenAvailableGeometry = QGuiApplication::primaryScreen()->availableGeometry();
-
-    EMAGMdiChildInUse->parentWidget()->resize(MainScreenAvailableGeometry.width(), MainScreenAvailableGeometry.height());
-    EMAGMdiChildInUse->parentWidget()->updateGeometry();
-
-    EMAGMdiChildInUse->show();
-}
-
 void MainWindow::on_actionAutentificare_eMAG_triggered()
 {
     //This function is executed when the user clicks "Autentificare EMAG" from the top menu.
@@ -40,10 +28,36 @@ void MainWindow::on_actionAutentificare_eMAG_triggered()
     AuthDialogInUse.exec();
 }
 
-EMAGMdiChild * MainWindow::CreateMdiChild()
+void MainWindow::on_actionPreluare_eMAG_triggered()
+{
+    //We create an MdiChild by using this function:
+    EMAGMdiChild * EMAGMdiChildInUse = MainWindow::CreateEMAGMdiChild();
+    EMAGMdiChildInUse->parentWidget()->resize(ui->mdiArea->size().width(), ui->mdiArea->size().height());
+    EMAGMdiChildInUse->show();
+}
+
+EMAGMdiChild * MainWindow::CreateEMAGMdiChild()
 {
     //This function creates an MdiChildWindow and returns a pointer to it so we have a handle on it.
     EMAGMdiChild * child = new EMAGMdiChild;
     ui->mdiArea->addSubWindow(child);
+    connect(child, &EMAGMdiChild::OrderEdit, this, &MainWindow::OrderEdit);
     return child;
+}
+
+void MainWindow::OrderEdit(const QString OrderPath)
+{
+    // We create an mdi child and pass the path of the order file to be edited via a public method.
+    OrderEditForm * OrderEditFormInUse = MainWindow::CreateOrderEditForm();
+    OrderEditFormInUse->SetOrderPath(OrderPath);
+    OrderEditFormInUse->parentWidget()->setFixedSize(OrderEditFormInUse->parentWidget()->size());
+    OrderEditFormInUse->show();
+}
+
+OrderEditForm * MainWindow::CreateOrderEditForm()
+{
+    //This function creates an OrderEditForm and returns the pointer.
+    OrderEditForm * form = new OrderEditForm;
+    ui->mdiArea->addSubWindow(form);
+    return form;
 }

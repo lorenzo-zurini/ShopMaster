@@ -2,6 +2,8 @@
 #define ORDEREDITFORM_H
 
 #include <QDialog>
+#include <QSettings>
+#include <QDebug>
 
 namespace Ui {
 class OrderEditForm;
@@ -15,8 +17,20 @@ public:
     explicit OrderEditForm(QWidget *parent = nullptr);
     ~OrderEditForm();
 
+    void SetOrderPath(const QString);
+
+private slots:
+    void on_CancelButton_clicked();
+
+    void on_SaveButton_clicked();
+
 private:
     Ui::OrderEditForm *ui;
+
+    QString OrderPath;
+
+    QSettings OrderFile;
+
 };
 
 #endif // ORDEREDITFORM_H

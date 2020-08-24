@@ -24,6 +24,7 @@ void MainWindow::on_actionPreluare_eMAG_triggered()
     //We create an MdiChild by using this function:
     EMAGMdiChild * EMAGMdiChildInUse = MainWindow::CreateMdiChild();
     EMAGMdiChildInUse->show();
+    EMAGMdiChildInUse->parentWidget()->resize(ui->mdiArea->size().width(), ui->mdiArea->size().height());
 }
 
 void MainWindow::on_actionAutentificare_eMAG_triggered()

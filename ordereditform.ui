@@ -6,193 +6,756 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>706</width>
-    <height>490</height>
+    <width>348</width>
+    <height>634</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QLineEdit" name="ContactNameLineEdit">
    <property name="geometry">
     <rect>
-     <x>100</x>
+     <x>150</x>
+     <y>120</y>
+     <width>171</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="ContactPhoneLineEdit">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>150</y>
+     <width>171</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="ContactCountryLineEdit">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>180</y>
+     <width>171</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="ContactCountyLineEdit">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>210</y>
+     <width>171</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="ContactCityLineEdit">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>240</y>
+     <width>171</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="ContactAdressLineEdit">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>270</y>
+     <width>171</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="OrderIDLabel">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
      <y>20</y>
-     <width>113</width>
-     <height>21</height>
+     <width>111</width>
+     <height>20</height>
     </rect>
    </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEdit_2">
-   <property name="geometry">
-    <rect>
-     <x>100</x>
-     <y>50</y>
-     <width>113</width>
-     <height>21</height>
-    </rect>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>ID Comanda</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_3">
+  <widget class="QLabel" name="OrderIDDisplayLabel">
    <property name="geometry">
     <rect>
-     <x>100</x>
-     <y>80</y>
-     <width>113</width>
-     <height>21</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEdit_4">
-   <property name="geometry">
-    <rect>
-     <x>100</x>
-     <y>110</y>
-     <width>113</width>
-     <height>21</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEdit_5">
-   <property name="geometry">
-    <rect>
-     <x>100</x>
-     <y>140</y>
-     <width>113</width>
-     <height>21</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEdit_6">
-   <property name="geometry">
-    <rect>
-     <x>100</x>
-     <y>170</y>
-     <width>113</width>
-     <height>21</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEdit_7">
-   <property name="geometry">
-    <rect>
-     <x>100</x>
-     <y>200</y>
-     <width>113</width>
-     <height>21</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEdit_8">
-   <property name="geometry">
-    <rect>
-     <x>100</x>
-     <y>230</y>
-     <width>113</width>
-     <height>21</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEdit_9">
-   <property name="geometry">
-    <rect>
-     <x>100</x>
-     <y>260</y>
-     <width>113</width>
-     <height>21</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEdit_10">
-   <property name="geometry">
-    <rect>
-     <x>380</x>
+     <x>150</x>
      <y>20</y>
-     <width>113</width>
-     <height>21</height>
+     <width>170</width>
+     <height>20</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_11">
+  <widget class="QLabel" name="DateLabel">
    <property name="geometry">
     <rect>
-     <x>380</x>
+     <x>20</x>
      <y>50</y>
-     <width>113</width>
-     <height>21</height>
+     <width>111</width>
+     <height>20</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Data</string>
+   </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_12">
+  <widget class="QLabel" name="DateDisplayLabel">
    <property name="geometry">
     <rect>
-     <x>380</x>
-     <y>80</y>
-     <width>113</width>
-     <height>21</height>
+     <x>150</x>
+     <y>50</y>
+     <width>170</width>
+     <height>20</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_13">
+  <widget class="QLabel" name="ContactNameLabel">
    <property name="geometry">
     <rect>
-     <x>380</x>
-     <y>110</y>
-     <width>113</width>
-     <height>21</height>
+     <x>20</x>
+     <y>120</y>
+     <width>111</width>
+     <height>20</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Nume Contact</string>
+   </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_14">
+  <widget class="QLabel" name="ContactPhoneLabel">
    <property name="geometry">
     <rect>
-     <x>380</x>
-     <y>140</y>
-     <width>113</width>
-     <height>21</height>
+     <x>20</x>
+     <y>150</y>
+     <width>111</width>
+     <height>20</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Telefon Contact</string>
+   </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_15">
+  <widget class="QLabel" name="ContactCountryLabel">
    <property name="geometry">
     <rect>
-     <x>380</x>
-     <y>170</y>
-     <width>113</width>
-     <height>21</height>
+     <x>20</x>
+     <y>180</y>
+     <width>111</width>
+     <height>20</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Tara Contact</string>
+   </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_16">
+  <widget class="QLabel" name="ContactCountyLabel">
    <property name="geometry">
     <rect>
-     <x>380</x>
-     <y>200</y>
-     <width>113</width>
-     <height>21</height>
+     <x>20</x>
+     <y>210</y>
+     <width>111</width>
+     <height>20</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Judet Contact</string>
+   </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_17">
+  <widget class="QLabel" name="ContactCityLabel">
    <property name="geometry">
     <rect>
-     <x>380</x>
-     <y>230</y>
-     <width>113</width>
-     <height>21</height>
+     <x>20</x>
+     <y>240</y>
+     <width>111</width>
+     <height>20</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Oras Contact</string>
+   </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_18">
+  <widget class="QLabel" name="ContactAdresLabel">
    <property name="geometry">
     <rect>
-     <x>380</x>
-     <y>260</y>
-     <width>113</width>
-     <height>21</height>
+     <x>20</x>
+     <y>270</y>
+     <width>111</width>
+     <height>20</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Adresa Contact</string>
+   </property>
   </widget>
+  <widget class="QFrame" name="LegalEntityBillingFrame">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>300</y>
+     <width>331</width>
+     <height>281</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QLabel" name="LegalBillingCompanyNameLabel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Nume Societate</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="LegalBillingCompanyNameLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>40</y>
+      <width>171</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="LegalBillingCIFLabel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>70</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>C.I.F.</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="LegalBillingCIFLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>70</y>
+      <width>171</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="LegalBillingNRRCLabel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>100</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Nr. Reg. Com</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="LegalBillingNRRCLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>100</y>
+      <width>171</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="LegalBillingCountryLabel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>130</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Tara Facturare</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="LegalBillingCountryLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>130</y>
+      <width>171</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="LegalBillingCountyLabel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>160</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Judet Facturare</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="LegalBillingCountyLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>160</y>
+      <width>171</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="LegalBillingCityLabel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>190</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Oras Facturare</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="LegalBillingCityLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>190</y>
+      <width>171</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="LegalBillingAdressLabel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>220</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Adresa Facturare</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="LegalBillingAdressLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>220</y>
+      <width>171</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="LegalBillingAccountLabel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>250</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Cont Facturare</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="LegalBillingAccountLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>250</y>
+      <width>171</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="LegalBillingDataLabel">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>10</y>
+      <width>131</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Date Facturare Firma</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="CancelButton">
+   <property name="geometry">
+    <rect>
+     <x>9</x>
+     <y>590</y>
+     <width>131</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Anuleaza</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="SaveButton">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>590</y>
+     <width>131</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Salveaza</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="ContactDataLabel">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>90</y>
+     <width>71</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Date Livrare</string>
+   </property>
+  </widget>
+  <widget class="QFrame" name="BillingFrame">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>300</y>
+     <width>331</width>
+     <height>281</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QLabel" name="BillingNameLabel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>100</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Nume Facturare</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="BillingNameLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>100</y>
+      <width>171</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="BillingCountryLabel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>130</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Tara Facturare</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="BillingCountryLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>130</y>
+      <width>171</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="BillingCountyLabel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>160</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Judet Facturare</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="BillingCountyLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>160</y>
+      <width>171</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="BillingCityLabel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>190</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Oras Facturare</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="BillingCityLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>190</y>
+      <width>171</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="BillingAdressLabel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>220</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Adresa Facturare</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="BillingAdressLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>220</y>
+      <width>171</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="BillingDataLabel">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>10</y>
+      <width>191</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Date Facturare Persoana Fizica</string>
+    </property>
+   </widget>
+  </widget>
+  <zorder>ContactNameLineEdit</zorder>
+  <zorder>ContactPhoneLineEdit</zorder>
+  <zorder>ContactCountryLineEdit</zorder>
+  <zorder>ContactCountyLineEdit</zorder>
+  <zorder>ContactCityLineEdit</zorder>
+  <zorder>ContactAdressLineEdit</zorder>
+  <zorder>OrderIDLabel</zorder>
+  <zorder>OrderIDDisplayLabel</zorder>
+  <zorder>DateLabel</zorder>
+  <zorder>DateDisplayLabel</zorder>
+  <zorder>ContactNameLabel</zorder>
+  <zorder>ContactPhoneLabel</zorder>
+  <zorder>ContactCountryLabel</zorder>
+  <zorder>ContactCountyLabel</zorder>
+  <zorder>ContactCityLabel</zorder>
+  <zorder>ContactAdresLabel</zorder>
+  <zorder>CancelButton</zorder>
+  <zorder>SaveButton</zorder>
+  <zorder>ContactDataLabel</zorder>
+  <zorder>LegalEntityBillingFrame</zorder>
+  <zorder>BillingFrame</zorder>
  </widget>
  <resources/>
  <connections/>

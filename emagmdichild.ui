@@ -20,162 +20,6 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0">
-    <widget class="QSplitter" name="splitter">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <widget class="QTableWidget" name="OrdersView">
-      <property name="sizeAdjustPolicy">
-       <enum>QAbstractScrollArea::AdjustIgnored</enum>
-      </property>
-      <property name="editTriggers">
-       <set>QAbstractItemView::NoEditTriggers</set>
-      </property>
-      <property name="alternatingRowColors">
-       <bool>true</bool>
-      </property>
-      <property name="selectionMode">
-       <enum>QAbstractItemView::SingleSelection</enum>
-      </property>
-      <property name="selectionBehavior">
-       <enum>QAbstractItemView::SelectRows</enum>
-      </property>
-      <property name="verticalScrollMode">
-       <enum>QAbstractItemView::ScrollPerPixel</enum>
-      </property>
-      <property name="horizontalScrollMode">
-       <enum>QAbstractItemView::ScrollPerPixel</enum>
-      </property>
-      <property name="sortingEnabled">
-       <bool>true</bool>
-      </property>
-      <property name="columnCount">
-       <number>17</number>
-      </property>
-      <attribute name="horizontalHeaderCascadingSectionResizes">
-       <bool>true</bool>
-      </attribute>
-      <attribute name="horizontalHeaderStretchLastSection">
-       <bool>true</bool>
-      </attribute>
-      <attribute name="verticalHeaderVisible">
-       <bool>false</bool>
-      </attribute>
-      <column>
-       <property name="text">
-        <string>ID Comanda</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Data</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Nume Contact</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Telefon Livrare</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Tara Livrare</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Judet Livrare</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Localitate Livrare</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Adresa Livrare</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Nume Facturare</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Tara Facturare</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Judet Facturare</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Localitate Facturare</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Adresa Facturare</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Nume Societate</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>NR. Reg. Com.</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Cod C.I.F.</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Cont</string>
-       </property>
-      </column>
-     </widget>
-     <widget class="QTableWidget" name="OrderDetailsView">
-      <property name="selectionMode">
-       <enum>QAbstractItemView::SingleSelection</enum>
-      </property>
-      <property name="selectionBehavior">
-       <enum>QAbstractItemView::SelectRows</enum>
-      </property>
-      <property name="columnCount">
-       <number>3</number>
-      </property>
-      <column>
-       <property name="text">
-        <string>ID Produs</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Cantitate</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Pret Vanzare</string>
-       </property>
-      </column>
-     </widget>
-    </widget>
-   </item>
    <item row="0" column="0">
     <widget class="QFrame" name="ToolbarFrame">
      <property name="minimumSize">
@@ -349,6 +193,15 @@
        <string>Finalizeaza</string>
       </property>
      </widget>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <widget class="QTableView" name="OrderDetailsView"/>
+     <widget class="QTableView" name="OrdersView"/>
     </widget>
    </item>
   </layout>

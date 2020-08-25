@@ -12,6 +12,13 @@ MainWindow::MainWindow(QWidget *parent)
     QScreen *MainScreen = QGuiApplication::primaryScreen();
     QRect MainScreenAvailableGeometry = MainScreen->availableGeometry();
     this->resize(MainScreenAvailableGeometry.width(), MainScreenAvailableGeometry.height());
+
+    // WE CREATE THE DATA DIR AS IT IS NOT CREATED AUTOMATICALLY.
+    MainWindow::DataDir.setPath(QCoreApplication::applicationDirPath() + "/Data");
+    MainWindow::DataDir.mkpath(MainWindow::DataDir.path());
+
+    // WE ADD THE DATABASE.
+    MainWindow::DataBase.setDatabaseName(QCoreApplication::applicationDirPath() + "/Data/DataBase.db");
 }
 
 MainWindow::~MainWindow()
@@ -32,6 +39,7 @@ void MainWindow::on_actionPreluare_eMAG_triggered()
 {
     //We create an MdiChild by using this function:
     EMAGMdiChild * EMAGMdiChildInUse = MainWindow::CreateEMAGMdiChild();
+    EMAGMdiChildInUse->PassDatabase(MainWindow::DataBase);
     EMAGMdiChildInUse->parentWidget()->resize(ui->mdiArea->size().width(), ui->mdiArea->size().height());
     EMAGMdiChildInUse->show();
 }
@@ -45,11 +53,11 @@ EMAGMdiChild * MainWindow::CreateEMAGMdiChild()
     return child;
 }
 
-void MainWindow::OrderEdit(const QString OrderPath)
+void MainWindow::OrderEdit()
 {
     // We create an mdi child and pass the path of the order file to be edited via a public method.
     OrderEditForm * OrderEditFormInUse = MainWindow::CreateOrderEditForm();
-    OrderEditFormInUse->SetOrderPath(OrderPath);
+    // PASS ORDER ID VIA METHOD
     OrderEditFormInUse->parentWidget()->setFixedSize(OrderEditFormInUse->parentWidget()->size());
     OrderEditFormInUse->show();
 }
@@ -57,7 +65,7 @@ void MainWindow::OrderEdit(const QString OrderPath)
 OrderEditForm * MainWindow::CreateOrderEditForm()
 {
     //This function creates an OrderEditForm and returns the pointer.
-    OrderEditForm * form = new OrderEditForm;
-    ui->mdiArea->addSubWindow(form);
-    return form;
+    OrderEditForm * child = new OrderEditForm;
+    ui->mdiArea->addSubWindow(child);
+    return child;
 }

@@ -18,6 +18,9 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QSettings>
+#include <QSql>
+#include <QSqlDatabase>
+#include <QSqlQuery>
 
 namespace Ui {
 class EMAGMdiChild;
@@ -30,6 +33,8 @@ class EMAGMdiChild : public QWidget
 public:
     explicit EMAGMdiChild(QWidget *parent = nullptr);
     ~EMAGMdiChild();
+
+    void PassDatabase(QSqlDatabase DataBase);
 
 private slots:
     void on_AuthRequestComplete(QNetworkReply * AuthReply);
@@ -58,6 +63,8 @@ private:
     QDir EMAGOrdersDirectory;
 
     QDate CurrentDate;
+
+    QSqlDatabase DataBase;
     
 signals:
     void OrderGetComplete();

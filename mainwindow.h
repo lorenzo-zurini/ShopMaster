@@ -21,6 +21,9 @@
 #include <QMenuBar>
 #include <QStatusBar>
 #include <QScreen>
+#include <QSql>
+#include <QSqlDatabase>
+#include <QSqlQuery>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -34,19 +37,24 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+
 private slots:
 
     void on_actionPreluare_eMAG_triggered();
 
     void on_actionAutentificare_eMAG_triggered();
 
-    void OrderEdit(const QString);
+    void OrderEdit();
 
 private:
 
     EMAGMdiChild * CreateEMAGMdiChild();
 
     OrderEditForm * CreateOrderEditForm();
+
+    QSqlDatabase DataBase = QSqlDatabase::addDatabase("QSQLITE");
+
+    QDir DataDir;
 
 private:
     Ui::MainWindow *ui;

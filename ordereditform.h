@@ -4,6 +4,8 @@
 #include <QDialog>
 #include <QSettings>
 #include <QDebug>
+#include <QSql>
+#include <QSqlDatabase>
 
 namespace Ui {
 class OrderEditForm;

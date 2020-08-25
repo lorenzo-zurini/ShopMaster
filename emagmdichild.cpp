@@ -101,10 +101,37 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
         QJsonArray OrdersArray = QJsonDocument::fromJson(AuthReply->readAll()).object()["results"].toArray();
         EMAGMdiChild::DataBase.open();
         QSqlQuery DBQuery;
-        DBQuery.exec("CREATE TABLE IF NOT EXISTS ORDERS (ORDER_ID INTEGER UNIQUE PRIMARY KEY, DATE DATETIME, CONTACT_NAME VARCHAR(30), CONTACT_PHONE VARCHAR(30), CONTACT_COUNTRY VARCHAR(30), CONTACT_COUNTY VARCHAR(30), CONTACT_CITY VARCHAR(30), CONTACT_ADRESS VARCHAR(50), IS_LEGAL_ENTITY BOOLEAN, BILLING_NAME VARCHAR(30), BILLING_COUNTRY VARCHAR(30), BILLING_COUNTY VARCHAR(30), BILLING_CITY VARCHAR(30), BILLING_ADRESS VARCHAR(50), BILLING_COMPANY_NAME VARCHAR(30), BILLING_CIF VARCHAR(20), BILLING_NRRC VARCHAR(20), BILLING_ACCOUNT VARCHAR(20))");
+        DBQuery.exec("CREATE TABLE IF NOT EXISTS ORDERS (ORDER_ID INTEGER UNIQUE PRIMARY KEY, "
+                     "DATE DATETIME, CONTACT_NAME VARCHAR(30), CONTACT_PHONE VARCHAR(30), "
+                     "CONTACT_COUNTRY VARCHAR(30), CONTACT_COUNTY VARCHAR(30), CONTACT_CITY VARCHAR(30), "
+                     "CONTACT_ADRESS VARCHAR(50), IS_LEGAL_ENTITY BOOLEAN, BILLING_NAME VARCHAR(30), "
+                     "BILLING_COUNTRY VARCHAR(30), BILLING_COUNTY VARCHAR(30), BILLING_CITY VARCHAR(30), "
+                     "BILLING_ADRESS VARCHAR(50), BILLING_COMPANY_NAME VARCHAR(30), BILLING_CIF VARCHAR(20), "
+                     "BILLING_NRRC VARCHAR(20), BILLING_ACCOUNT VARCHAR(20))");
         for (int i = 0; i < OrdersArray.size(); i++)
         {
-            DBQuery.exec("INSERT OR REPLACE INTO ORDERS (ORDER_ID, DATE, CONTACT_NAME, CONTACT_PHONE, CONTACT_COUNTRY, CONTACT_COUNTY, CONTACT_CITY, CONTACT_ADRESS, IS_LEGAL_ENTITY, BILLING_NAME, BILLING_COUNTRY, BILLING_COUNTY, BILLING_CITY, BILLING_ADRESS, BILLING_COMPANY_NAME, BILLING_CIF, BILLING_NRRC, BILLING_ACCOUNT) VALUES (" + QString::number(OrdersArray.at(i).toObject()["id"].toInt()) + ", " + OrdersArray.at(i).toObject()["date"].toString() + ", " + OrdersArray.at(i).toObject()["customer"].toObject()["shipping_contact"].toString() + ", " + OrdersArray.at(i).toObject()["customer"].toObject()["shipping_phone"].toString() + ", " + OrdersArray.at(i).toObject()["customer"].toObject()["shipping_country"].toString() + ", " + OrdersArray.at(i).toObject()["customer"].toObject()["shipping_suburb"].toString() + ", " + OrdersArray.at(i).toObject()["customer"].toObject()["shipping_city"].toString() + ", " + OrdersArray.at(i).toObject()["customer"].toObject()["shipping_street"].toString() + ", " + OrdersArray.at(i).toObject()["customer"].toObject()["legal_entity"].toString() + ", " + OrdersArray.at(i).toObject()["customer"].toObject()["billing_name"].toString() + ", " + OrdersArray.at(i).toObject()["customer"].toObject()["billing_country"].toString() + ", " + OrdersArray.at(i).toObject()["customer"].toObject()["billing_suburb"].toString() + ", " + OrdersArray.at(i).toObject()["customer"].toObject()["billing_city"].toString() + ", " + OrdersArray.at(i).toObject()["customer"].toObject()["billing_street"].toString() + ", " + OrdersArray.at(i).toObject()["customer"].toObject()["company"].toString() + ", " + OrdersArray.at(i).toObject()["customer"].toObject()["code"].toString() + ", " + OrdersArray.at(i).toObject()["customer"].toObject()["registration_number"].toString() + ", " + OrdersArray.at(i).toObject()["customer"].toObject()["iban"].toString() +")");
+            DBQuery.exec("INSERT OR REPLACE INTO ORDERS (ORDER_ID, DATE, CONTACT_NAME, CONTACT_PHONE, "
+                         "CONTACT_COUNTRY, CONTACT_COUNTY, CONTACT_CITY, CONTACT_ADRESS, IS_LEGAL_ENTITY, "
+                         "BILLING_NAME, BILLING_COUNTRY, BILLING_COUNTY, BILLING_CITY, BILLING_ADRESS, "
+                         "BILLING_COMPANY_NAME, BILLING_CIF, BILLING_NRRC, BILLING_ACCOUNT) "
+                         "VALUES (" + QString::number(OrdersArray.at(i).toObject()["id"].toInt()) + ", "
+                        + OrdersArray.at(i).toObject()["date"].toString() + ", "
+                        + OrdersArray.at(i).toObject()["customer"].toObject()["shipping_contact"].toString() + ", "
+                        + OrdersArray.at(i).toObject()["customer"].toObject()["shipping_phone"].toString() + ", "
+                        + OrdersArray.at(i).toObject()["customer"].toObject()["shipping_country"].toString() + ", "
+                        + OrdersArray.at(i).toObject()["customer"].toObject()["shipping_suburb"].toString() + ", "
+                        + OrdersArray.at(i).toObject()["customer"].toObject()["shipping_city"].toString() + ", "
+                        + OrdersArray.at(i).toObject()["customer"].toObject()["shipping_street"].toString() + ", "
+                        + OrdersArray.at(i).toObject()["customer"].toObject()["legal_entity"].toString() + ", "
+                        + OrdersArray.at(i).toObject()["customer"].toObject()["billing_name"].toString() + ", "
+                        + OrdersArray.at(i).toObject()["customer"].toObject()["billing_country"].toString() + ", "
+                        + OrdersArray.at(i).toObject()["customer"].toObject()["billing_suburb"].toString() + ", "
+                        + OrdersArray.at(i).toObject()["customer"].toObject()["billing_city"].toString() + ", "
+                        + OrdersArray.at(i).toObject()["customer"].toObject()["billing_street"].toString() + ", "
+                        + OrdersArray.at(i).toObject()["customer"].toObject()["company"].toString() + ", "
+                        + OrdersArray.at(i).toObject()["customer"].toObject()["code"].toString() + ", "
+                        + OrdersArray.at(i).toObject()["customer"].toObject()["registration_number"].toString() + ", "
+                        + OrdersArray.at(i).toObject()["customer"].toObject()["iban"].toString() +")");
         }
         emit OrderGetComplete();
     }

@@ -101,13 +101,103 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
         QJsonArray OrdersArray = QJsonDocument::fromJson(AuthReply->readAll()).object()["results"].toArray();
         EMAGMdiChild::DataBase.open();
         QSqlQuery DBQuery;
-        DBQuery.exec("CREATE TABLE IF NOT EXISTS ORDERS (id INTEGER UNIQUE PRIMARY KEY)");
-        DBQuery.exec("CREATE TABLE IF NOT EXISTS ORDERED_PRODUCTS (parent_order_id INTEGER UNIQUE PRIMARY KEY)");
-        DBQuery.exec("CREATE TABLE IF NOT EXISTS CUSTOMERS (parent_order_id INTEGER UNIQUE PRIMARY KEY)");
+        QString QueryData;
+        QueryData.append("CREATE TABLE IF NOT EXISTS EMAG_ORDERS (");
+        QueryData.append("id INTEGER UNIQUE PRIMARY KEY, ");
+        QueryData.append("date DATETIME, ");
+        QueryData.append("status INTEGER, ");
+        QueryData.append("internal_status INTEGER, ");
+        QueryData.append("type INTEGER, ");
+        QueryData.append("cancellation_request INTEGER, ");
+        QueryData.append("cancellation_reason INTEGER, ");
+        QueryData.append("is_storno INTEGER, ");
+        QueryData.append("cashed_co INTEGER, ");
+        QueryData.append("cashed_cod INTEGER, ");
+        QueryData.append("delivery_mode VARCHAR(10), ");
+        QueryData.append("detailed_payment_method TEXT, ");
+        QueryData.append("emag_club INTEGER, ");
+        QueryData.append("has_editable_products INTEGER, ");
+        QueryData.append("is_complete INTEGER, ");
+        QueryData.append("maximum_date_for_shipment TEXT, ");
+        QueryData.append("observation TEXT, ");
+        QueryData.append("parent_id INTEGER, ");
+        QueryData.append("payment_mode TEXT, ");
+        QueryData.append("payment_mode_id INTEGER, ");
+        QueryData.append("payment_status INTEGER, ");
+        QueryData.append("refund_status INTEGER, ");
+        QueryData.append("refunded_amount INTEGER, ");
+        QueryData.append("shipping_tax REAL, ");
+        QueryData.append("vendor_name TEXT)");
+        DBQuery.exec(QueryData);
+        QueryData.clear();
+
         for (int i = 0; i < OrdersArray.size(); i++)
         {
-
+            QueryData.append("INSERT INTO EMAG_ORDERS");
+            QueryData.append(" (");
+            QueryData.append("id, ");
+            QueryData.append("date, ");
+            QueryData.append("status, ");
+            QueryData.append("internal_status, ");
+            QueryData.append("type, ");
+            QueryData.append("cancellation_request, ");
+            QueryData.append("cancellation_reason, ");
+            QueryData.append("is_storno, ");
+            QueryData.append("cashed_co, ");
+            QueryData.append("cashed_cod, ");
+            QueryData.append("delivery_mode, ");
+            QueryData.append("detailed_payment_method, ");
+            QueryData.append("emag_club, ");
+            QueryData.append("has_editable_products, ");
+            QueryData.append("is_complete, ");
+            QueryData.append("maximum_date_for_shipment, ");
+            QueryData.append("observation, ");
+            QueryData.append("parent_id, ");
+            QueryData.append("payment_mode, ");
+            QueryData.append("payment_mode_id, ");
+            QueryData.append("payment_status, ");
+            QueryData.append("refund_status, ");
+            QueryData.append("refunded_amount, ");
+            QueryData.append("shipping_tax, ");
+            QueryData.append("vendor_name");
+            QueryData.append(") ");
+            QueryData.append("VALUES");
+            QueryData.append(" (");
+            QueryData.append(QString::number(OrdersArray.at(i).toObject()["id"].toInt()) + ", ");
+            QueryData.append(OrdersArray.at(i).toObject()["date"].toString() + ", ");
+            QueryData.append(QString::number(OrdersArray.at(i).toObject()["status"].toInt()) + ", ");
+            QueryData.append(QString::number(OrdersArray.at(i).toObject()["status"].toInt()) + ", "); // CHANGE THIS
+            QueryData.append(QString::number(OrdersArray.at(i).toObject()["type"].toInt()) + ", ");
+            QueryData.append(QString::number(OrdersArray.at(i).toObject()["cancellation_request"].toInt()) + ", ");
+            QueryData.append(QString::number(OrdersArray.at(i).toObject()["cancellation_reason"].toInt()) + ", ");
+            QueryData.append(QString::number(OrdersArray.at(i).toObject()["is_storno"].toInt()) + ", ");
+            QueryData.append(QString::number(OrdersArray.at(i).toObject()["cashed_co"].toInt()) + ", ");
+            QueryData.append(QString::number(OrdersArray.at(i).toObject()["cashed_cod"].toInt()) + ", ");
+            QueryData.append(QString::number(OrdersArray.at(i).toObject()["delivery_mode"].toInt()) + ", ");
+            QueryData.append(QString::number(OrdersArray.at(i).toObject()["detailed_payment_method"].toInt()) + ", ");
+            QueryData.append( + ", ");
+            QueryData.append( + ", ");
+            QueryData.append( + ", ");
+            QueryData.append( + ", ");
+            QueryData.append( + ", ");
+            QueryData.append( + ", ");
+            QueryData.append( + ", ");
+            QueryData.append( + ", ");
+            QueryData.append( + ", ");
+            QueryData.append( + ", ");
+            QueryData.append( + ", ");
+            QueryData.append( + ", ");
+            QueryData.append( + ", ");
+            QueryData.append( + ", ");
+            QueryData.append( + ", ");
+            QueryData.append( + ", ");
+            QueryData.append( + ", ");
+            DBQuery.exec(QueryData);
         }
+
+        DBQuery.exec("CREATE TABLE IF NOT EXISTS ORDERED_PRODUCTS (parent_order_id INTEGER UNIQUE PRIMARY KEY)");
+        DBQuery.exec("CREATE TABLE IF NOT EXISTS CUSTOMERS (parent_order_id INTEGER UNIQUE PRIMARY KEY)");
+
         emit OrderGetComplete();
     }
 }

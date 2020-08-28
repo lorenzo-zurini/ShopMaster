@@ -102,6 +102,8 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
         EMAGMdiChild::DataBase.open();
         QSqlQuery DBQuery;
         QString QueryData;
+
+        //THE MAIN ORDERS TABLE
         QueryData.append("");   QueryData.append("CREATE TABLE IF NOT EXISTS EMAG_ORDERS");     QueryData.append(" (");   
         QueryData.append("");   QueryData.append("id INTEGER UNIQUE PRIMARY KEY");              QueryData.append(", ");
         QueryData.append("");   QueryData.append("date DATETIME");                              QueryData.append(", ");
@@ -128,11 +130,11 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
         QueryData.append("");   QueryData.append("refunded_amount INTEGER");                    QueryData.append(", ");
         QueryData.append("");   QueryData.append("shipping_tax REAL");                          QueryData.append(", ");
         QueryData.append("");   QueryData.append("vendor_name TEXT");                           QueryData.append(", ");
-
+        //THE CUSTOMER SECTION
         QueryData.append("");   QueryData.append("customer_id INTEGER");                        QueryData.append(", "); // Modified COLUMN name!!
-        QueryData.append("");   QueryData.append("name TEXT");                                  QueryData.append(", ");
-        QueryData.append("");   QueryData.append("email TEXT");                                 QueryData.append(", ");
-        QueryData.append("");   QueryData.append("company TEXT");                               QueryData.append(", ");
+        QueryData.append("");   QueryData.append("name TEXT");                                  QueryData.append(", "); // ADD MORE FIELDS THAT ARE
+        QueryData.append("");   QueryData.append("email TEXT");                                 QueryData.append(", "); // NOT IN THE DOCUMENTATION
+        QueryData.append("");   QueryData.append("company TEXT");                               QueryData.append(", "); // BUT SHOW UP IN THE JSONS
         QueryData.append("");   QueryData.append("gender TEXT");                                QueryData.append(", ");
         QueryData.append("");   QueryData.append("code TEXT");                                  QueryData.append(", ");
         QueryData.append("");   QueryData.append("registration_number TEXT");                   QueryData.append(", ");
@@ -160,6 +162,29 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
         QueryData.append("");   QueryData.append("shipping_postal_code TEXT");                  QueryData.append(", ");
         QueryData.append("");   QueryData.append("billing_locality_id INTEGER");                QueryData.append(", ");
         QueryData.append("");   QueryData.append("shipping_locality_id INTEGER");               QueryData.append(")");
+
+        //THE LINKED ORDERED PRODUCTS TABLE
+        QueryData.append("");   QueryData.append("CREATE TABLE IF NOT EXISTS EMAG_ORDERED_PRODUCTS");       QueryData.append(" ("); // ADD ATTACHMENTS, DETAILS
+        QueryData.append("");   QueryData.append("parent_order_id INTEGER UNIQUE PRIMARY KEY");             QueryData.append(", "); // Internal key
+        QueryData.append("");   QueryData.append("id INTEGER");                                             QueryData.append(", ");
+        QueryData.append("");   QueryData.append("product_id INTEGER");                                     QueryData.append(", ");
+        QueryData.append("");   QueryData.append("status INTEGER");                                         QueryData.append(", ");
+        QueryData.append("");   QueryData.append("part_number TEXT");                                       QueryData.append(", ");
+        QueryData.append("");   QueryData.append("created TEXT");                                           QueryData.append(", ");
+        QueryData.append("");   QueryData.append("modified TEXT");                                          QueryData.append(", ");
+        QueryData.append("");   QueryData.append("currency TEXT");                                          QueryData.append(", ");
+        QueryData.append("");   QueryData.append("quantity INTEGER");                                       QueryData.append(", ");
+        QueryData.append("");   QueryData.append("sale_price INTEGER");                                     QueryData.append(", ");
+        QueryData.append("");   QueryData.append("details TEXT");                                           QueryData.append(", ");
+        QueryData.append("");   QueryData.append("ext_part_number TEXT");                                   QueryData.append(", ");
+        QueryData.append("");   QueryData.append("retained_amount INTEGER");                                QueryData.append(", ");
+        QueryData.append("");   QueryData.append("original_price INTEGER");                                 QueryData.append(", ");
+        QueryData.append("");   QueryData.append("mkt_id INTEGER");                                         QueryData.append(", ");
+        QueryData.append("");   QueryData.append("vat INTEGER");                                            QueryData.append(", ");
+        QueryData.append("");   QueryData.append("initial_qty INTEGER");                                    QueryData.append(", ");
+        QueryData.append("");   QueryData.append("storno_qty INTEGER");                                     QueryData.append(", ");
+        QueryData.append("");   QueryData.append("reversible_vat_charging INTEGER");                        QueryData.append(")");
+
         DBQuery.exec(QueryData);
         QueryData.clear();
 
@@ -285,7 +310,7 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
             DBQuery.exec(QueryData);
             QueryData.clear();
 
-            for (int j = 0; j < OrdersArray.at(i).toObject()["customer"].toArray().size(); j++) 
+            for (int j = 0; j < OrdersArray.at(i).toObject()["products"].toArray().size(); j++)
             {
                 
             }

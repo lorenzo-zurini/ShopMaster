@@ -113,8 +113,8 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
         QueryData.append("");   QueryData.append("cancellation_request INTEGER");               QueryData.append(", ");
         QueryData.append("");   QueryData.append("cancellation_reason INTEGER");                QueryData.append(", ");
         QueryData.append("");   QueryData.append("is_storno INTEGER");                          QueryData.append(", ");
-        QueryData.append("");   QueryData.append("cashed_co INTEGER");                          QueryData.append(", ");
-        QueryData.append("");   QueryData.append("cashed_cod INTEGER");                         QueryData.append(", ");
+        QueryData.append("");   QueryData.append("cashed_co REAL");                             QueryData.append(", ");
+        QueryData.append("");   QueryData.append("cashed_cod REAL");                            QueryData.append(", ");
         QueryData.append("");   QueryData.append("delivery_mode TEXT");                         QueryData.append(", ");
         QueryData.append("");   QueryData.append("detailed_payment_method TEXT");               QueryData.append(", ");
         QueryData.append("");   QueryData.append("emag_club INTEGER");                          QueryData.append(", ");
@@ -127,7 +127,7 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
         QueryData.append("");   QueryData.append("payment_mode_id INTEGER");                    QueryData.append(", ");
         QueryData.append("");   QueryData.append("payment_status INTEGER");                     QueryData.append(", ");
         QueryData.append("");   QueryData.append("refund_status INTEGER");                      QueryData.append(", ");
-        QueryData.append("");   QueryData.append("refunded_amount INTEGER");                    QueryData.append(", ");
+        QueryData.append("");   QueryData.append("refunded_amount REAL");                       QueryData.append(", ");
         QueryData.append("");   QueryData.append("shipping_tax REAL");                          QueryData.append(", ");
         QueryData.append("");   QueryData.append("vendor_name TEXT");                           QueryData.append(", ");
         //THE CUSTOMER SECTION
@@ -163,9 +163,13 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
         QueryData.append("");   QueryData.append("billing_locality_id INTEGER");                QueryData.append(", ");
         QueryData.append("");   QueryData.append("shipping_locality_id INTEGER");               QueryData.append(")");
 
+        DBQuery.exec(QueryData);
+        qDebug().noquote() << QueryData;
+        QueryData.clear();
+
         //THE LINKED ORDERED PRODUCTS TABLE
         QueryData.append("");   QueryData.append("CREATE TABLE IF NOT EXISTS EMAG_ORDERED_PRODUCTS");       QueryData.append(" ("); // ADD ATTACHMENTS, DETAILS
-        QueryData.append("");   QueryData.append("parent_order_id INTEGER UNIQUE PRIMARY KEY");             QueryData.append(", "); // Internal key
+        QueryData.append("");   QueryData.append("parent_order_id INTEGER PRIMARY KEY");                    QueryData.append(", "); // Internal key
         QueryData.append("");   QueryData.append("id INTEGER");                                             QueryData.append(", ");
         QueryData.append("");   QueryData.append("product_id INTEGER");                                     QueryData.append(", ");
         QueryData.append("");   QueryData.append("status INTEGER");                                         QueryData.append(", ");
@@ -174,11 +178,11 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
         QueryData.append("");   QueryData.append("modified TEXT");                                          QueryData.append(", ");
         QueryData.append("");   QueryData.append("currency TEXT");                                          QueryData.append(", ");
         QueryData.append("");   QueryData.append("quantity INTEGER");                                       QueryData.append(", ");
-        QueryData.append("");   QueryData.append("sale_price INTEGER");                                     QueryData.append(", ");
+        QueryData.append("");   QueryData.append("sale_price REAL");                                        QueryData.append(", ");
         QueryData.append("");   QueryData.append("details TEXT");                                           QueryData.append(", ");
         QueryData.append("");   QueryData.append("ext_part_number TEXT");                                   QueryData.append(", ");
-        QueryData.append("");   QueryData.append("retained_amount INTEGER");                                QueryData.append(", ");
-        QueryData.append("");   QueryData.append("original_price INTEGER");                                 QueryData.append(", ");
+        QueryData.append("");   QueryData.append("retained_amount REAL");                                   QueryData.append(", ");
+        QueryData.append("");   QueryData.append("original_price REAL");                                    QueryData.append(", ");
         QueryData.append("");   QueryData.append("mkt_id INTEGER");                                         QueryData.append(", ");
         QueryData.append("");   QueryData.append("vat INTEGER");                                            QueryData.append(", ");
         QueryData.append("");   QueryData.append("initial_qty INTEGER");                                    QueryData.append(", ");
@@ -186,6 +190,7 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
         QueryData.append("");   QueryData.append("reversible_vat_charging INTEGER");                        QueryData.append(")");
 
         DBQuery.exec(QueryData);
+        qDebug().noquote() << QueryData;
         QueryData.clear();
 
         for (int i = 0; i < OrdersArray.size(); i++)
@@ -257,8 +262,8 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
             QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["cancellation_request"].toInt()));            QueryData.append(", ");
             QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["cancellation_reason"].toInt()));             QueryData.append(", ");
             QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["is_storno"].toInt()));                       QueryData.append(", ");
-            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["cashed_co"].toInt()));                       QueryData.append(", ");
-            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["cashed_cod"].toInt()));                      QueryData.append(", ");
+            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["cashed_co"].toDouble()));                    QueryData.append(", ");
+            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["cashed_cod"].toDouble()));                   QueryData.append(", ");
             QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["delivery_mode"].toInt()));                   QueryData.append(", ");
             QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["detailed_payment_method"].toString());                       QueryData.append("\", ");
             QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["emag_club"].toInt()));                       QueryData.append(", ");
@@ -271,7 +276,7 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
             QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["payment_mode_id"].toInt()));                 QueryData.append(", ");
             QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["payment_status"].toInt()));                  QueryData.append(", ");
             QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["refund_status"].toInt()));                   QueryData.append(", ");
-            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["refunded_amount"].toInt()));                 QueryData.append(", ");
+            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["refunded_amount"].toDouble()));                 QueryData.append(", ");
             QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["shipping_tax"].toDouble()));                 QueryData.append(", ");
             QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["vendor_name"].toString());                                   QueryData.append("\", ");
 
@@ -308,15 +313,57 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
             QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["customer"].toObject()["shipping_locality_id"].toInt()));     QueryData.append(")");
 
             DBQuery.exec(QueryData);
+            qDebug().noquote() << QueryData;
             QueryData.clear();
 
             for (int j = 0; j < OrdersArray.at(i).toObject()["products"].toArray().size(); j++)
             {
-                
+                QueryData.append("INSERT INTO EMAG_ORDERED_PRODUCTS");
+                QueryData.append(" (");         QueryData.append("parent_order_id");                      QueryData.append(", ");
+                QueryData.append("");           QueryData.append("id");                                   QueryData.append(", ");
+                QueryData.append("");           QueryData.append("product_id");                           QueryData.append(", ");
+                QueryData.append("");           QueryData.append("status");                               QueryData.append(", ");
+                QueryData.append("");           QueryData.append("part_number");                          QueryData.append(", ");
+                QueryData.append("");           QueryData.append("created");                              QueryData.append(", ");
+                QueryData.append("");           QueryData.append("modified");                             QueryData.append(", ");
+                QueryData.append("");           QueryData.append("currency");                             QueryData.append(", ");
+                QueryData.append("");           QueryData.append("quantity");                             QueryData.append(", ");
+                QueryData.append("");           QueryData.append("sale_price");                           QueryData.append(", ");   // ITS NOT ACTUALLY AN INT
+                QueryData.append("");           QueryData.append("details");                              QueryData.append(", ");   // WILL NEED TO BE FIXED
+                QueryData.append("");           QueryData.append("ext_part_number");                      QueryData.append(", ");   // THIS AND ALL TE OTHER PLACES
+                QueryData.append("");           QueryData.append("retained_amount");                      QueryData.append(", ");   // WHERE THE COUMENTATION IS WRONG
+                QueryData.append("");           QueryData.append("original_price");                       QueryData.append(", ");
+                QueryData.append("");           QueryData.append("mkt_id");                               QueryData.append(", ");
+                QueryData.append("");           QueryData.append("vat");                                  QueryData.append(", ");
+                QueryData.append("");           QueryData.append("initial_qty");                          QueryData.append(", ");
+                QueryData.append("");           QueryData.append("storno_qty");                           QueryData.append(", ");
+                QueryData.append("");           QueryData.append("reversible_vat_charging");              QueryData.append(") ");
+                QueryData.append("VALUES");
+                QueryData.append(" (");         QueryData.append(QString::number(OrdersArray.at(i).toObject()["id"].toInt()));                                                              QueryData.append(", ");
+                QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["id"].toInt()));                       QueryData.append(", ");
+                QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["product_id"].toInt()));               QueryData.append(", ");
+                QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["status"].toInt()));                   QueryData.append(", ");
+                QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["part_number"].toString());                            QueryData.append("\", ");
+                QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["created"].toString());                                QueryData.append("\", ");
+                QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["modified"].toString());                               QueryData.append("\", ");
+                QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["currency"].toString());                               QueryData.append("\", ");
+                QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["quantity"].toInt()));                 QueryData.append(", ");
+                QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["sale_price"].toString());                             QueryData.append("\", ");
+                QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["details"].toString());                                QueryData.append("\", ");
+                QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["ext_part_number"].toString());                        QueryData.append("\", ");
+                QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["retained_ammount"].toString());                       QueryData.append("\", ");
+                QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["original_price"].toString());                         QueryData.append("\", ");
+                QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["mkt_id"].toInt()));                   QueryData.append(", ");
+                QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["vat"].toString());                                    QueryData.append("\", ");
+                QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["initial_qty"].toInt()));              QueryData.append(", ");
+                QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["storno_qty"].toInt()));               QueryData.append(", ");
+                QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["reversible_vat_charging"].toInt()));  QueryData.append(")");
+
+                DBQuery.exec(QueryData);
+                qDebug().noquote() << QueryData;
+                QueryData.clear();
             }
         }
-
-        DBQuery.exec("CREATE TABLE IF NOT EXISTS ORDERED_PRODUCTS (parent_order_id INTEGER UNIQUE PRIMARY KEY)");
 
         emit OrderGetComplete();
     }

@@ -21,6 +21,7 @@
 #include <QSql>
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <QSqlTableModel>
 
 namespace Ui {
 class EMAGMdiChild;

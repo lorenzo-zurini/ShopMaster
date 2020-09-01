@@ -50,8 +50,6 @@ private slots:
 
     void on_OrderDateView_userDateChanged(const QDate &date);
 
-    void on_OrdersView_itemSelectionChanged();
-
     void on_ModifyOrderButton_clicked();
 
 private:

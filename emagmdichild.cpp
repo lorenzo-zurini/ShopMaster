@@ -120,7 +120,7 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
         QueryData.append("");   QueryData.append("emag_club INTEGER");                          QueryData.append(", ");
         QueryData.append("");   QueryData.append("has_editable_products INTEGER");              QueryData.append(", ");
         QueryData.append("");   QueryData.append("is_complete INTEGER");                        QueryData.append(", ");
-        QueryData.append("");   QueryData.append("maximum_date_for_shipment TEXT");             QueryData.append(", ");
+        QueryData.append("");   QueryData.append("maximum_date_for_shipment DATETIME");         QueryData.append(", ");
         QueryData.append("");   QueryData.append("observation TEXT");                           QueryData.append(", ");
         QueryData.append("");   QueryData.append("parent_id INTEGER");                          QueryData.append(", ");
         QueryData.append("");   QueryData.append("payment_mode TEXT");                          QueryData.append(", ");
@@ -174,8 +174,8 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
         QueryData.append("");   QueryData.append("product_id INTEGER");                                     QueryData.append(", ");
         QueryData.append("");   QueryData.append("status INTEGER");                                         QueryData.append(", ");
         QueryData.append("");   QueryData.append("part_number TEXT");                                       QueryData.append(", ");
-        QueryData.append("");   QueryData.append("created TEXT");                                           QueryData.append(", ");
-        QueryData.append("");   QueryData.append("modified TEXT");                                          QueryData.append(", ");
+        QueryData.append("");   QueryData.append("created DATETIME");                                       QueryData.append(", ");
+        QueryData.append("");   QueryData.append("modified DATETIME");                                      QueryData.append(", ");
         QueryData.append("");   QueryData.append("currency TEXT");                                          QueryData.append(", ");
         QueryData.append("");   QueryData.append("quantity INTEGER");                                       QueryData.append(", ");
         QueryData.append("");   QueryData.append("sale_price REAL");                                        QueryData.append(", ");
@@ -371,11 +371,18 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
 
 void EMAGMdiChild::PopulateOrderViewTable()
 {
-    //REWRITE FOR DATABASE
+    EMAGMdiChild::DataBase.open();
+    QSqlQueryModel * QueryModel = new QSqlQueryModel;
+    QSqlQuery DBQuery;
+    QString QueryData;
+    DBQuery.exec("SELECT * FROM EMAG_ORDERS WHERE date BETWEEN \"" + EMAGMdiChild::CurrentDate.startOfDay().toString(Qt::ISODate).replace("T", " ") + "\" AND \"" + EMAGMdiChild::CurrentDate.endOfDay().toString(Qt::ISODate).replace("T", " ") + "\"");
+    QueryModel->setQuery(DBQuery);
+    ui->OrdersView->setModel(QueryModel);
 }
 
 void EMAGMdiChild::PopulateOrderDetailsViewTable()
 {
+
     //REWRITE FOR DATABASE
 
 }
@@ -401,11 +408,6 @@ void EMAGMdiChild::on_OrderDateView_userDateChanged(const QDate &date)
     //REWRITE FOR DATABASE
     EMAGMdiChild::CurrentDate.setDate(date.year(), date.month(), date.day());
     PopulateOrderViewTable();
-}
-
-void EMAGMdiChild::on_OrdersView_itemSelectionChanged()
-{
-    PopulateOrderDetailsViewTable();
 }
 
 void EMAGMdiChild::on_ModifyOrderButton_clicked()

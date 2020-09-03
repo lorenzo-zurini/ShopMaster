@@ -39,6 +39,11 @@ EMAGMdiChild::~EMAGMdiChild()
     delete ui;
 }
 
+void EMAGMdiChild::PassDatabase(QSqlDatabase DataBase)
+{
+    EMAGMdiChild::DataBase = DataBase;
+}
+
 void EMAGMdiChild::GetEMAGOrders()
 {
     //The NetworkManager class is initialised and the signal is connected to our slot function.
@@ -94,157 +99,297 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
     else
     {
         QJsonArray OrdersArray = QJsonDocument::fromJson(AuthReply->readAll()).object()["results"].toArray();
+        EMAGMdiChild::DataBase.open();
+        QSqlQuery DBQuery;
+        QString QueryData;
+
+        //THE MAIN ORDERS TABLE
+        QueryData.append("");   QueryData.append("CREATE TABLE IF NOT EXISTS EMAG_ORDERS");     QueryData.append(" (");   
+        QueryData.append("");   QueryData.append("id INTEGER UNIQUE PRIMARY KEY");              QueryData.append(", ");
+        QueryData.append("");   QueryData.append("date DATETIME");                              QueryData.append(", ");
+        QueryData.append("");   QueryData.append("status INTEGER");                             QueryData.append(", ");
+        QueryData.append("");   QueryData.append("internal_status INTEGER");                    QueryData.append(", ");
+        QueryData.append("");   QueryData.append("type INTEGER");                               QueryData.append(", ");
+        QueryData.append("");   QueryData.append("cancellation_request INTEGER");               QueryData.append(", ");
+        QueryData.append("");   QueryData.append("cancellation_reason INTEGER");                QueryData.append(", ");
+        QueryData.append("");   QueryData.append("is_storno INTEGER");                          QueryData.append(", ");
+        QueryData.append("");   QueryData.append("cashed_co REAL");                             QueryData.append(", ");
+        QueryData.append("");   QueryData.append("cashed_cod REAL");                            QueryData.append(", ");
+        QueryData.append("");   QueryData.append("delivery_mode TEXT");                         QueryData.append(", ");
+        QueryData.append("");   QueryData.append("detailed_payment_method TEXT");               QueryData.append(", ");
+        QueryData.append("");   QueryData.append("emag_club INTEGER");                          QueryData.append(", ");
+        QueryData.append("");   QueryData.append("has_editable_products INTEGER");              QueryData.append(", ");
+        QueryData.append("");   QueryData.append("is_complete INTEGER");                        QueryData.append(", ");
+        QueryData.append("");   QueryData.append("maximum_date_for_shipment DATETIME");         QueryData.append(", ");
+        QueryData.append("");   QueryData.append("observation TEXT");                           QueryData.append(", ");
+        QueryData.append("");   QueryData.append("parent_id INTEGER");                          QueryData.append(", ");
+        QueryData.append("");   QueryData.append("payment_mode TEXT");                          QueryData.append(", ");
+        QueryData.append("");   QueryData.append("payment_mode_id INTEGER");                    QueryData.append(", ");
+        QueryData.append("");   QueryData.append("payment_status INTEGER");                     QueryData.append(", ");
+        QueryData.append("");   QueryData.append("refund_status INTEGER");                      QueryData.append(", ");
+        QueryData.append("");   QueryData.append("refunded_amount REAL");                       QueryData.append(", ");
+        QueryData.append("");   QueryData.append("shipping_tax REAL");                          QueryData.append(", ");
+        QueryData.append("");   QueryData.append("vendor_name TEXT");                           QueryData.append(", ");
+        //THE CUSTOMER SECTION
+        QueryData.append("");   QueryData.append("customer_id INTEGER");                        QueryData.append(", "); // Modified COLUMN name!!
+        QueryData.append("");   QueryData.append("name TEXT");                                  QueryData.append(", "); // ADD MORE FIELDS THAT ARE
+        QueryData.append("");   QueryData.append("email TEXT");                                 QueryData.append(", "); // NOT IN THE DOCUMENTATION
+        QueryData.append("");   QueryData.append("company TEXT");                               QueryData.append(", "); // BUT SHOW UP IN THE JSONS
+        QueryData.append("");   QueryData.append("gender TEXT");                                QueryData.append(", ");
+        QueryData.append("");   QueryData.append("code TEXT");                                  QueryData.append(", ");
+        QueryData.append("");   QueryData.append("registration_number TEXT");                   QueryData.append(", ");
+        QueryData.append("");   QueryData.append("bank TEXT");                                  QueryData.append(", ");
+        QueryData.append("");   QueryData.append("iban TEXT");                                  QueryData.append(", ");
+        QueryData.append("");   QueryData.append("fax TEXT");                                   QueryData.append(", ");
+        QueryData.append("");   QueryData.append("legal_entity INTEGER");                       QueryData.append(", ");
+        QueryData.append("");   QueryData.append("is_vat_payer INTEGER");                       QueryData.append(", ");
+        QueryData.append("");   QueryData.append("phone_1 TEXT");                               QueryData.append(", ");
+        QueryData.append("");   QueryData.append("phone_2 TEXT");                               QueryData.append(", ");
+        QueryData.append("");   QueryData.append("phone_3 TEXT");                               QueryData.append(", ");
+        QueryData.append("");   QueryData.append("billing_name TEXT");                          QueryData.append(", ");
+        QueryData.append("");   QueryData.append("billing_phone TEXT");                         QueryData.append(", ");
+        QueryData.append("");   QueryData.append("billing_country TEXT");                       QueryData.append(", ");
+        QueryData.append("");   QueryData.append("billing_suburb TEXT");                        QueryData.append(", ");
+        QueryData.append("");   QueryData.append("billing_city TEXT");                          QueryData.append(", ");
+        QueryData.append("");   QueryData.append("billing_street TEXT");                        QueryData.append(", ");
+        QueryData.append("");   QueryData.append("billing_postal_code TEXT");                   QueryData.append(", ");
+        QueryData.append("");   QueryData.append("shipping_contact TEXT");                      QueryData.append(", ");
+        QueryData.append("");   QueryData.append("shipping_phone TEXT");                        QueryData.append(", ");
+        QueryData.append("");   QueryData.append("shipping_country TEXT");                      QueryData.append(", ");
+        QueryData.append("");   QueryData.append("shipping_suburb TEXT");                       QueryData.append(", ");
+        QueryData.append("");   QueryData.append("shipping_city TEXT");                         QueryData.append(", ");
+        QueryData.append("");   QueryData.append("shipping_street TEXT");                       QueryData.append(", ");
+        QueryData.append("");   QueryData.append("shipping_postal_code TEXT");                  QueryData.append(", ");
+        QueryData.append("");   QueryData.append("billing_locality_id INTEGER");                QueryData.append(", ");
+        QueryData.append("");   QueryData.append("shipping_locality_id INTEGER");               QueryData.append(")");
+
+        DBQuery.exec(QueryData);
+        qDebug().noquote() << QueryData;
+        QueryData.clear();
+
+        //THE LINKED ORDERED PRODUCTS TABLE
+        QueryData.append("");   QueryData.append("CREATE TABLE IF NOT EXISTS EMAG_ORDERED_PRODUCTS");       QueryData.append(" ("); // ADD ATTACHMENTS, DETAILS
+        QueryData.append("");   QueryData.append("parent_order_id INTEGER PRIMARY KEY");                    QueryData.append(", "); // Internal key
+        QueryData.append("");   QueryData.append("id INTEGER");                                             QueryData.append(", ");
+        QueryData.append("");   QueryData.append("product_id INTEGER");                                     QueryData.append(", ");
+        QueryData.append("");   QueryData.append("status INTEGER");                                         QueryData.append(", ");
+        QueryData.append("");   QueryData.append("part_number TEXT");                                       QueryData.append(", ");
+        QueryData.append("");   QueryData.append("created DATETIME");                                       QueryData.append(", ");
+        QueryData.append("");   QueryData.append("modified DATETIME");                                      QueryData.append(", ");
+        QueryData.append("");   QueryData.append("currency TEXT");                                          QueryData.append(", ");
+        QueryData.append("");   QueryData.append("quantity INTEGER");                                       QueryData.append(", ");
+        QueryData.append("");   QueryData.append("sale_price REAL");                                        QueryData.append(", ");
+        QueryData.append("");   QueryData.append("details TEXT");                                           QueryData.append(", ");
+        QueryData.append("");   QueryData.append("ext_part_number TEXT");                                   QueryData.append(", ");
+        QueryData.append("");   QueryData.append("retained_amount REAL");                                   QueryData.append(", ");
+        QueryData.append("");   QueryData.append("original_price REAL");                                    QueryData.append(", ");
+        QueryData.append("");   QueryData.append("mkt_id INTEGER");                                         QueryData.append(", ");
+        QueryData.append("");   QueryData.append("vat INTEGER");                                            QueryData.append(", ");
+        QueryData.append("");   QueryData.append("initial_qty INTEGER");                                    QueryData.append(", ");
+        QueryData.append("");   QueryData.append("storno_qty INTEGER");                                     QueryData.append(", ");
+        QueryData.append("");   QueryData.append("reversible_vat_charging INTEGER");                        QueryData.append(")");
+
+        DBQuery.exec(QueryData);
+        qDebug().noquote() << QueryData;
+        QueryData.clear();
+
         for (int i = 0; i < OrdersArray.size(); i++)
         {
-            //WE DECLARE A NEW FILE FOR EACH ORDER, USING THE QSETTINGS CLASS
-            //WE USE THE DIRECTORY STRUCTURE AS A MEANS OF CATEGORIZATION
-            //WE BUILD THE PATH FOR EACH FILE FROM THE DATE CONTAINED IN THE JSON
-            //WE USE THE ID CONTAINED IN THE JSON AS THE FILENAME
-            QSettings* OrderFile = new QSettings(EMAGOrdersDirectory.path() + "/"
-                    + OrdersArray.at(i).toObject()["date"].toString().left(4) + "/"
-                    + OrdersArray.at(i).toObject()["date"].toString().left(7).right(2) + "/"
-                    + OrdersArray.at(i).toObject()["date"].toString().left(10).right(2) + "/"
-                    + QString::number(OrdersArray.at(i).toObject()["id"].toInt()) + ".order", QSettings::IniFormat);
+            QueryData.append("INSERT INTO EMAG_ORDERS");
+            QueryData.append(" (");         QueryData.append("id");                           QueryData.append(", ");
+            QueryData.append("");           QueryData.append("date");                         QueryData.append(", ");
+            QueryData.append("");           QueryData.append("status");                       QueryData.append(", ");
+            QueryData.append("");           QueryData.append("internal_status");              QueryData.append(", ");
+            QueryData.append("");           QueryData.append("type");                         QueryData.append(", ");
+            QueryData.append("");           QueryData.append("cancellation_request");         QueryData.append(", ");
+            QueryData.append("");           QueryData.append("cancellation_reason");          QueryData.append(", ");
+            QueryData.append("");           QueryData.append("is_storno");                    QueryData.append(", ");
+            QueryData.append("");           QueryData.append("cashed_co");                    QueryData.append(", ");
+            QueryData.append("");           QueryData.append("cashed_cod");                   QueryData.append(", ");
+            QueryData.append("");           QueryData.append("delivery_mode");                QueryData.append(", ");
+            QueryData.append("");           QueryData.append("detailed_payment_method");      QueryData.append(", ");
+            QueryData.append("");           QueryData.append("emag_club");                    QueryData.append(", ");
+            QueryData.append("");           QueryData.append("has_editable_products");        QueryData.append(", ");
+            QueryData.append("");           QueryData.append("is_complete");                  QueryData.append(", ");
+            QueryData.append("");           QueryData.append("maximum_date_for_shipment");    QueryData.append(", ");
+            QueryData.append("");           QueryData.append("observation");                  QueryData.append(", ");
+            QueryData.append("");           QueryData.append("parent_id");                    QueryData.append(", ");
+            QueryData.append("");           QueryData.append("payment_mode");                 QueryData.append(", ");
+            QueryData.append("");           QueryData.append("payment_mode_id");              QueryData.append(", ");
+            QueryData.append("");           QueryData.append("payment_status");               QueryData.append(", ");
+            QueryData.append("");           QueryData.append("refund_status");                QueryData.append(", ");
+            QueryData.append("");           QueryData.append("refunded_amount");              QueryData.append(", ");
+            QueryData.append("");           QueryData.append("shipping_tax");                 QueryData.append(", ");
+            QueryData.append("");           QueryData.append("vendor_name");                  QueryData.append(", ");
 
-            //HERE WE READ THE JSON REPLY AND PARSE THE DATA INTO OUR UNIVERSAL ORDER FORMAT
-            OrderFile->beginGroup("ORDER_DATA");
-            OrderFile->setValue("ID", QString::number(OrdersArray.at(i).toObject()["id"].toInt()));
-            OrderFile->setValue("DATE", OrdersArray.at(i).toObject()["date"].toString());
-            OrderFile->endGroup();
+            QueryData.append("");           QueryData.append("customer_id");                  QueryData.append(", ");   // Modified COLUMN Name
+            QueryData.append("");           QueryData.append("name");                         QueryData.append(", ");
+            QueryData.append("");           QueryData.append("email");                        QueryData.append(", ");
+            QueryData.append("");           QueryData.append("company");                      QueryData.append(", ");
+            QueryData.append("");           QueryData.append("gender");                       QueryData.append(", ");
+            QueryData.append("");           QueryData.append("code");                         QueryData.append(", ");
+            QueryData.append("");           QueryData.append("registration_number");          QueryData.append(", ");
+            QueryData.append("");           QueryData.append("bank");                         QueryData.append(", ");
+            QueryData.append("");           QueryData.append("iban");                         QueryData.append(", ");
+            QueryData.append("");           QueryData.append("fax");                          QueryData.append(", ");
+            QueryData.append("");           QueryData.append("legal_entity");                 QueryData.append(", ");
+            QueryData.append("");           QueryData.append("is_vat_payer");                 QueryData.append(", ");
+            QueryData.append("");           QueryData.append("phone_1");                      QueryData.append(", ");
+            QueryData.append("");           QueryData.append("phone_2");                      QueryData.append(", ");
+            QueryData.append("");           QueryData.append("phone_3");                      QueryData.append(", ");
+            QueryData.append("");           QueryData.append("billing_name");                 QueryData.append(", ");
+            QueryData.append("");           QueryData.append("billing_phone");                QueryData.append(", ");
+            QueryData.append("");           QueryData.append("billing_country");              QueryData.append(", ");
+            QueryData.append("");           QueryData.append("billing_suburb");               QueryData.append(", ");
+            QueryData.append("");           QueryData.append("billing_city");                 QueryData.append(", ");
+            QueryData.append("");           QueryData.append("billing_street");               QueryData.append(", ");
+            QueryData.append("");           QueryData.append("billing_postal_code");          QueryData.append(", ");
+            QueryData.append("");           QueryData.append("shipping_contact");             QueryData.append(", ");
+            QueryData.append("");           QueryData.append("shipping_phone");               QueryData.append(", ");
+            QueryData.append("");           QueryData.append("shipping_country");             QueryData.append(", ");
+            QueryData.append("");           QueryData.append("shipping_suburb");              QueryData.append(", ");
+            QueryData.append("");           QueryData.append("shipping_city");                QueryData.append(", ");
+            QueryData.append("");           QueryData.append("shipping_street");              QueryData.append(", ");
+            QueryData.append("");           QueryData.append("shipping_postal_code");         QueryData.append(", ");
+            QueryData.append("");           QueryData.append("billing_locality_id");          QueryData.append(", ");
+            QueryData.append("");           QueryData.append("shipping_locality_id");         QueryData.append(") ");
+            QueryData.append("VALUES");
+            QueryData.append(" (");         QueryData.append(QString::number(OrdersArray.at(i).toObject()["id"].toInt()));                              QueryData.append(", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["date"].toString());                                          QueryData.append("\", ");
+            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["status"].toInt()));                          QueryData.append(", ");
+            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["status"].toInt()));                          QueryData.append(", ");  // CHANGE THIS
+            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["type"].toInt()));                            QueryData.append(", ");
+            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["cancellation_request"].toInt()));            QueryData.append(", ");
+            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["cancellation_reason"].toInt()));             QueryData.append(", ");
+            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["is_storno"].toInt()));                       QueryData.append(", ");
+            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["cashed_co"].toDouble()));                    QueryData.append(", ");
+            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["cashed_cod"].toDouble()));                   QueryData.append(", ");
+            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["delivery_mode"].toInt()));                   QueryData.append(", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["detailed_payment_method"].toString());                       QueryData.append("\", ");
+            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["emag_club"].toInt()));                       QueryData.append(", ");
+            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["has_editable_products"].toInt()));           QueryData.append(", ");
+            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["is_complete"].toInt()));                     QueryData.append(", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["maximum_date_for_shipment"].toString());                     QueryData.append("\", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["observation"].toString());                                   QueryData.append("\", ");
+            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["parent_id"].toInt()));                       QueryData.append(", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["payment_mode"].toString());                                  QueryData.append("\", ");
+            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["payment_mode_id"].toInt()));                 QueryData.append(", ");
+            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["payment_status"].toInt()));                  QueryData.append(", ");
+            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["refund_status"].toInt()));                   QueryData.append(", ");
+            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["refunded_amount"].toDouble()));                 QueryData.append(", ");
+            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["shipping_tax"].toDouble()));                 QueryData.append(", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["vendor_name"].toString());                                   QueryData.append("\", ");
 
-            OrderFile->beginGroup("CONTACT_DATA");
-            OrderFile->setValue("CONTACT_NAME", OrdersArray.at(i).toObject()["customer"].toObject()["shipping_contact"].toString());
-            OrderFile->setValue("CONTACT_PHONE", OrdersArray.at(i).toObject()["customer"].toObject()["shipping_phone"].toString());
-            OrderFile->setValue("CONTACT_COUNTRY", OrdersArray.at(i).toObject()["customer"].toObject()["shipping_country"].toString());
-            OrderFile->setValue("CONTACT_COUNTY", OrdersArray.at(i).toObject()["customer"].toObject()["shipping_suburb"].toString());
-            OrderFile->setValue("CONTACT_CITY", OrdersArray.at(i).toObject()["customer"].toObject()["shipping_city"].toString());
-            OrderFile->setValue("CONTACT_ADRESS", OrdersArray.at(i).toObject()["customer"].toObject()["shipping_street"].toString());
-            OrderFile->endGroup();
+            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["customer"].toObject()["id"].toInt()));                       QueryData.append(", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["customer"].toObject()["name"].toString());                                   QueryData.append("\", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["customer"].toObject()["email"].toString());                                  QueryData.append("\", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["customer"].toObject()["company"].toString());                                QueryData.append("\", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["customer"].toObject()["gender"].toString());                                 QueryData.append("\", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["customer"].toObject()["code"].toString());                                   QueryData.append("\", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["customer"].toObject()["registration_number"].toString());                    QueryData.append("\", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["customer"].toObject()["bank"].toString());                                   QueryData.append("\", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["customer"].toObject()["iban"].toString());                                   QueryData.append("\", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["customer"].toObject()["fax"].toString());                                    QueryData.append("\", ");
+            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["customer"].toObject()["legal_entity"].toInt()));             QueryData.append(", ");
+            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["customer"].toObject()["is_vat_payer"].toInt()));             QueryData.append(", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["customer"].toObject()["phone_1"].toString());                                QueryData.append("\", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["customer"].toObject()["phone_2"].toString());                                QueryData.append("\", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["customer"].toObject()["phone_3"].toString());                                QueryData.append("\", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["customer"].toObject()["billing_name"].toString());                           QueryData.append("\", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["customer"].toObject()["billing_phone"].toString());                          QueryData.append("\", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["customer"].toObject()["billing_country"].toString());                        QueryData.append("\", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["customer"].toObject()["billing_suburb"].toString());                         QueryData.append("\", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["customer"].toObject()["billing_city"].toString());                           QueryData.append("\", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["customer"].toObject()["billing_street"].toString());                         QueryData.append("\", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["customer"].toObject()["billing_postal_code"].toString());                    QueryData.append("\", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["customer"].toObject()["shipping_contact"].toString());                       QueryData.append("\", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["customer"].toObject()["shipping_phone"].toString());                         QueryData.append("\", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["customer"].toObject()["shipping_country"].toString());                       QueryData.append("\", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["customer"].toObject()["shipping_suburb"].toString());                        QueryData.append("\", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["customer"].toObject()["shipping_city"].toString());                          QueryData.append("\", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["customer"].toObject()["shipping_street"].toString());                        QueryData.append("\", ");
+            QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["customer"].toObject()["shipping_postal_code"].toString());                   QueryData.append("\", ");
+            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["customer"].toObject()["billing_locality_id"].toInt()));      QueryData.append(", ");
+            QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["customer"].toObject()["shipping_locality_id"].toInt()));     QueryData.append(")");
 
-            OrderFile->beginGroup("BILLING_DATA");
-            //AICI TREBUIE IMPLEMENTATA SI O OPTIUNE PENTRU PERSOANE JURIDICE, CU COD CIF SI NR. REG. COM.
-            OrderFile->setValue("BILLING_NAME", OrdersArray.at(i).toObject()["customer"].toObject()["billing_name"].toString());
-            OrderFile->setValue("BILLING_COUNTRY", OrdersArray.at(i).toObject()["customer"].toObject()["billing_country"].toString());
-            OrderFile->setValue("BILLING_COUNTY", OrdersArray.at(i).toObject()["customer"].toObject()["billing_suburb"].toString());
-            OrderFile->setValue("BILLING_CITY", OrdersArray.at(i).toObject()["customer"].toObject()["billing_city"].toString());
-            OrderFile->setValue("BILLING_ADRESS", OrdersArray.at(i).toObject()["customer"].toObject()["billing_street"].toString());
-            OrderFile->endGroup();
+            DBQuery.exec(QueryData);
+            qDebug().noquote() << QueryData;
+            QueryData.clear();
 
-            //HERE WE RECURSIVELY PARSE THE PRODUCTS IN THE ORDER INTO OUR FORMAT
-            for (int j=0; j < OrdersArray.at(i).toObject()["products"].toArray().size(); j++)
+            for (int j = 0; j < OrdersArray.at(i).toObject()["products"].toArray().size(); j++)
             {
-                OrderFile->beginGroup("PRODUCT_" + QString::number(j + 1));
-                OrderFile->setValue("PRODUCT_ID", OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["part_number"].toString());
-                OrderFile->setValue("SALE_PRICE", OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["sale_price"].toString());
-                OrderFile->setValue("QUANTITY", QString::number(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["quantity"].toInt()));
-                OrderFile->endGroup();
+                QueryData.append("INSERT INTO EMAG_ORDERED_PRODUCTS");
+                QueryData.append(" (");         QueryData.append("parent_order_id");                      QueryData.append(", ");
+                QueryData.append("");           QueryData.append("id");                                   QueryData.append(", ");
+                QueryData.append("");           QueryData.append("product_id");                           QueryData.append(", ");
+                QueryData.append("");           QueryData.append("status");                               QueryData.append(", ");
+                QueryData.append("");           QueryData.append("part_number");                          QueryData.append(", ");
+                QueryData.append("");           QueryData.append("created");                              QueryData.append(", ");
+                QueryData.append("");           QueryData.append("modified");                             QueryData.append(", ");
+                QueryData.append("");           QueryData.append("currency");                             QueryData.append(", ");
+                QueryData.append("");           QueryData.append("quantity");                             QueryData.append(", ");
+                QueryData.append("");           QueryData.append("sale_price");                           QueryData.append(", ");   // ITS NOT ACTUALLY AN INT
+                QueryData.append("");           QueryData.append("details");                              QueryData.append(", ");   // WILL NEED TO BE FIXED
+                QueryData.append("");           QueryData.append("ext_part_number");                      QueryData.append(", ");   // THIS AND ALL TE OTHER PLACES
+                QueryData.append("");           QueryData.append("retained_amount");                      QueryData.append(", ");   // WHERE THE COUMENTATION IS WRONG
+                QueryData.append("");           QueryData.append("original_price");                       QueryData.append(", ");
+                QueryData.append("");           QueryData.append("mkt_id");                               QueryData.append(", ");
+                QueryData.append("");           QueryData.append("vat");                                  QueryData.append(", ");
+                QueryData.append("");           QueryData.append("initial_qty");                          QueryData.append(", ");
+                QueryData.append("");           QueryData.append("storno_qty");                           QueryData.append(", ");
+                QueryData.append("");           QueryData.append("reversible_vat_charging");              QueryData.append(") ");
+                QueryData.append("VALUES");
+                QueryData.append(" (");         QueryData.append(QString::number(OrdersArray.at(i).toObject()["id"].toInt()));                                                              QueryData.append(", ");
+                QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["id"].toInt()));                       QueryData.append(", ");
+                QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["product_id"].toInt()));               QueryData.append(", ");
+                QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["status"].toInt()));                   QueryData.append(", ");
+                QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["part_number"].toString());                            QueryData.append("\", ");
+                QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["created"].toString());                                QueryData.append("\", ");
+                QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["modified"].toString());                               QueryData.append("\", ");
+                QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["currency"].toString());                               QueryData.append("\", ");
+                QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["quantity"].toInt()));                 QueryData.append(", ");
+                QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["sale_price"].toString());                             QueryData.append("\", ");
+                QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["details"].toString());                                QueryData.append("\", ");
+                QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["ext_part_number"].toString());                        QueryData.append("\", ");
+                QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["retained_ammount"].toString());                       QueryData.append("\", ");
+                QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["original_price"].toString());                         QueryData.append("\", ");
+                QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["mkt_id"].toInt()));                   QueryData.append(", ");
+                QueryData.append("\"");         QueryData.append(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["vat"].toString());                                    QueryData.append("\", ");
+                QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["initial_qty"].toInt()));              QueryData.append(", ");
+                QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["storno_qty"].toInt()));               QueryData.append(", ");
+                QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["reversible_vat_charging"].toInt()));  QueryData.append(")");
+
+                DBQuery.exec(QueryData);
+                qDebug().noquote() << QueryData;
+                QueryData.clear();
             }
-            OrderFile->sync();
-            //REMOVE THIS DATA FROM MEMORY SOMEHOW SO AS TO NOT USE TOO MUCH MEMORY
         }
-        //ONCE ALL FILES ARE SAVED, WE EMIT THIS SIGNAL
+
         emit OrderGetComplete();
     }
 }
 
 void EMAGMdiChild::PopulateOrderViewTable()
 {
-    //WE CLEAR THE TABLES BEFORE REPOPULATING THEM TO PREVENT DATA INTERFERENCE AND CRASHES
-    //AND ALSO BECAUSE IT MAKES SENSE IDK
-    ui->OrdersView->clearSelection();
-    ui->OrderDetailsView->clearSelection();
-    ui->OrdersView->setRowCount(0);
-
-    //WE USE THE CURRENTDATE OR THE DATE SET BY THE USER TO DETERMINE WHAT DIRECTORY TO LOOK INTO FOR ORDERS SAVED PREVIOUSLY
-    QDir CurrentDirectory;
-
-    //THE DATE IS DERIVED FROM THE CURRENTDATE VARIABLE AND ZEROES ARE ADDED IN ORDER TO BE COMPATIBLE WITH THE FOLDER STRUCTURE
-    QString MonthWithZero = QString::number(EMAGMdiChild::CurrentDate.month());
-    if (MonthWithZero.length() == 1)
-    {
-        MonthWithZero.prepend(QString::number(0));
-    }
-
-    QString DayWithZero = QString::number(EMAGMdiChild::CurrentDate.day());
-    if (DayWithZero.length() == 1)
-    {
-        DayWithZero.prepend(QString::number(0));
-    }
-
-    CurrentDirectory.setPath(EMAGOrdersDirectory.path() + "/" + QString::number(EMAGMdiChild::CurrentDate.year()) + "/" + MonthWithZero + "/" + DayWithZero);
-
-    //WE SET THE ROW COUNT FOR THE TABLE AND ADD ALL THE ITEMS RECURSIVELY
-    //WE NEED TO SUBTRACT 2 BECAUSE THE FUNCTION LISTS "." and ".." AS SUBDIRECTORIES
-    ui->OrdersView->setRowCount(CurrentDirectory.count() - 2);
-    foreach(QString filename, CurrentDirectory.entryList())
-    {
-        if(filename != "." && filename != ".." && CurrentDirectory.entryList().count() > 2)
-        {
-            //THIS LOOP ADDS ALL THE ITEMS TO THE TABLE. THE COORDINATES ARE DERIVED BY USING THE FILENAME AS AN ITERATOR BY FINDING IT IN THE DIRECTORY LIST
-            QSettings * OrderFile = new QSettings(CurrentDirectory.path() + "/" + filename, QSettings::IniFormat);
-            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 0, new QTableWidgetItem(QString::number(OrderFile->value("ORDER_DATA/ID").toInt())));
-            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 1, new QTableWidgetItem(OrderFile->value("ORDER_DATA/DATE").toString()));
-            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 2, new QTableWidgetItem(OrderFile->value("CONTACT_DATA/CONTACT_NAME").toString()));
-            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 3, new QTableWidgetItem(OrderFile->value("CONTACT_DATA/CONTACT_PHONE").toString()));
-            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 4, new QTableWidgetItem(OrderFile->value("CONTACT_DATA/CONTACT_COUNTRY").toString()));
-            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 5, new QTableWidgetItem(OrderFile->value("CONTACT_DATA/CONTACT_COUNTY").toString()));
-            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 6, new QTableWidgetItem(OrderFile->value("CONTACT_DATA/CONTACT_CITY").toString()));
-            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 7, new QTableWidgetItem(OrderFile->value("CONTACT_DATA/CONTACT_ADRESS").toString()));
-            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 8, new QTableWidgetItem(OrderFile->value("BILLING_DATA/BILLING_NAME").toString()));
-            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 9, new QTableWidgetItem(OrderFile->value("BILLING_DATA/BILLING_COUNTRY").toString()));
-            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 10, new QTableWidgetItem(OrderFile->value("BILLING_DATA/BILLING_COUNTY").toString()));
-            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 11, new QTableWidgetItem(OrderFile->value("BILLING_DATA/BILLING_CITY").toString()));
-            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 12, new QTableWidgetItem(OrderFile->value("BILLING_DATA/BILLING_ADRESS").toString()));
-            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 13, new QTableWidgetItem(OrderFile->value("BILLING_DATA/BILLING_COMPANY_NAME").toString()));
-            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 14, new QTableWidgetItem(OrderFile->value("BILLING_DATA/BILLING_CIF").toString()));
-            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 15, new QTableWidgetItem(OrderFile->value("BILLING_DATA/BILLING_NRRC").toString()));
-            ui->OrdersView->setItem(CurrentDirectory.entryList().indexOf(filename) - 2, 16, new QTableWidgetItem(OrderFile->value("BILLING_DATA/BILLING_ACCOUNT").toString()));
-        }
-    }
+    EMAGMdiChild::DataBase.open();
+    QSqlQueryModel * QueryModel = new QSqlQueryModel;
+    QSqlQuery DBQuery;
+    QString QueryData;
+    DBQuery.exec("SELECT * FROM EMAG_ORDERS WHERE date BETWEEN \"" + EMAGMdiChild::CurrentDate.startOfDay().toString(Qt::ISODate).replace("T", " ") + "\" AND \"" + EMAGMdiChild::CurrentDate.endOfDay().toString(Qt::ISODate).replace("T", " ") + "\"");
+    QueryModel->setQuery(DBQuery);
+    ui->OrdersView->setModel(QueryModel);
 }
 
 void EMAGMdiChild::PopulateOrderDetailsViewTable()
 {
-    ui->OrderDetailsView->setRowCount(0);
-    QDir CurrentDirectory;
-    QString MonthWithZero = QString::number(EMAGMdiChild::CurrentDate.month());
-    if (MonthWithZero.length() == 1)
-    {
-        MonthWithZero.prepend(QString::number(0));
-    }
 
-    QString DayWithZero = QString::number(EMAGMdiChild::CurrentDate.day());
-    if (DayWithZero.length() == 1)
-    {
-        DayWithZero.prepend(QString::number(0));
-    }
+    //REWRITE FOR DATABASE
 
-    CurrentDirectory.setPath(EMAGOrdersDirectory.path() + "/" + QString::number(EMAGMdiChild::CurrentDate.year()) + "/" + MonthWithZero + "/" + DayWithZero);
-    //WE NEED TO CHECK IF SOMETHING IS ACTUALLY SELECTED IN THE MAIN TABLE
-    //OTHERWISE THE WHOLE PROGRAM WILL CRASH
-
-    //ORDERS WITH MULTIPLE PRODUCTS DO NOT SHOW UP PROPERLY IN THE SECONDARY TABLE
-    if (ui->OrdersView->selectedItems().count() != 0)
-        {
-        QSettings * OrderFile = new QSettings(CurrentDirectory.path() + "/" + ui->OrdersView->item(ui->OrdersView->selectedRanges().first().topRow(), 0)->text() + ".order", QSettings::IniFormat);
-        foreach(QString group, OrderFile->childGroups())
-            {
-            if(group != "ORDER_DATA" && group != "BILLING_DATA" && group != "CONTACT_DATA" && group.left(8) == "PRODUCT_")
-                {
-                ui->OrderDetailsView->setRowCount(ui->OrderDetailsView->rowCount() + 1);
-                ui->OrderDetailsView->setItem(group.mid(group.indexOf("_"), group.length()).toInt(), 0, new QTableWidgetItem(OrderFile->value(group + "/PRODUCT_ID").toString()));
-                ui->OrderDetailsView->setItem(group.mid(group.indexOf("_"), group.length()).toInt(), 1, new QTableWidgetItem(OrderFile->value(group + "/QUANTITY").toString()));
-                ui->OrderDetailsView->setItem(group.mid(group.indexOf("_"), group.length()).toInt(), 2, new QTableWidgetItem(OrderFile->value(group + "/SALE_PRICE").toString()));
-            }
-        }
-    }
 }
 
 void EMAGMdiChild::on_PreviousDayButton_clicked()
 {
-    ui->OrdersView->clearSelection();
-    ui->OrderDetailsView->clearSelection();
-    ui->OrderDetailsView->setRowCount(0);
+    //REWRITE FOR DATABASE
     EMAGMdiChild::CurrentDate.setDate(EMAGMdiChild::CurrentDate.addDays(-1).year(), EMAGMdiChild::CurrentDate.addDays(-1).month(), EMAGMdiChild::CurrentDate.addDays(-1).day() );
     ui->OrderDateView->setDate(EMAGMdiChild::CurrentDate);
     PopulateOrderViewTable();
@@ -252,9 +397,7 @@ void EMAGMdiChild::on_PreviousDayButton_clicked()
 
 void EMAGMdiChild::on_NextDayButton_clicked()
 {
-    ui->OrdersView->clearSelection();
-    ui->OrderDetailsView->clearSelection();
-    ui->OrderDetailsView->setRowCount(0);
+    //REWRITE FOR DATABASE
     EMAGMdiChild::CurrentDate.setDate(EMAGMdiChild::CurrentDate.addDays(1).year(), EMAGMdiChild::CurrentDate.addDays(1).month(), EMAGMdiChild::CurrentDate.addDays(1).day() );
     ui->OrderDateView->setDate(EMAGMdiChild::CurrentDate);
     PopulateOrderViewTable();
@@ -262,16 +405,9 @@ void EMAGMdiChild::on_NextDayButton_clicked()
 
 void EMAGMdiChild::on_OrderDateView_userDateChanged(const QDate &date)
 {
-    ui->OrdersView->clearSelection();
-    ui->OrderDetailsView->clearSelection();
-    ui->OrderDetailsView->setRowCount(0);
+    //REWRITE FOR DATABASE
     EMAGMdiChild::CurrentDate.setDate(date.year(), date.month(), date.day());
     PopulateOrderViewTable();
-}
-
-void EMAGMdiChild::on_OrdersView_itemSelectionChanged()
-{
-    PopulateOrderDetailsViewTable();
 }
 
 void EMAGMdiChild::on_ModifyOrderButton_clicked()
@@ -288,6 +424,5 @@ void EMAGMdiChild::on_ModifyOrderButton_clicked()
     {
         DayWithZero.prepend(QString::number(0));
     }
-    QString OrderPath = (EMAGOrdersDirectory.path() + "/" + QString::number(EMAGMdiChild::CurrentDate.year()) + "/" + MonthWithZero + "/" + DayWithZero + "/" + ui->OrdersView->item(ui->OrdersView->selectedRanges().first().topRow(), 0)->text() + ".order");
-    emit OrderEdit(OrderPath);
+    //REWRITE FOR DATABASE
 }

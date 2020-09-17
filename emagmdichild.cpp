@@ -77,7 +77,7 @@ void EMAGMdiChild::GetEMAGOrders()
 
     //The data body of the post request is constructed here (doesn´t appear to work yet).
     QByteArray PostData;
-    PostData.append("currentPage=1&itemsPerPage=1");
+    PostData.append("currentPage=1&itemsPerPage=100");
 
     //The request is made and the data is printed to the debug console.
     AuthManager->post(ApiRequest, PostData);
@@ -426,4 +426,15 @@ void EMAGMdiChild::on_ModifyOrderButton_clicked()
     }
     //REWRITE FOR DATABASE
 }
-   //Salut lume
+
+void EMAGMdiChild::on_OrdersView_clicked(const QModelIndex &index)
+{
+    qDebug() << ui->OrdersView->model()->data(ui->OrdersView->model()->index(index.row() , 0)).toString();
+    EMAGMdiChild::DataBase.open();
+    QSqlQueryModel * QueryModel = new QSqlQueryModel;
+    QSqlQuery DBQuery;
+    DBQuery.exec( "SELECT * FROM EMAG_ORDERED_PRODUCTS WHERE parent_order_id == " + ui->OrdersView->model()->data(ui->OrdersView->model()->index(index.row() , 0)).toString());
+    QueryModel->setQuery(DBQuery);
+    ui->OrderDetailsView->setModel(QueryModel);
+}
+

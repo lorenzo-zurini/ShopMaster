@@ -52,6 +52,8 @@ private slots:
 
     void on_ModifyOrderButton_clicked();
 
+    void on_OrdersView_clicked(const QModelIndex &index);
+
 private:
     Ui::EMAGMdiChild *ui;
 

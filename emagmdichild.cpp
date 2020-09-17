@@ -73,11 +73,11 @@ void EMAGMdiChild::GetEMAGOrders()
     QNetworkRequest ApiRequest;
     ApiRequest.setUrl(ApiUrl);
     ApiRequest.setRawHeader("Authorization", AuthData);
-    ApiRequest.setRawHeader("Content-Type", "application/json");
+    ApiRequest.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
 
     //The data body of the post request is constructed here (doesn´t appear to work yet).
     QByteArray PostData;
-    PostData.append("currentPage=1&itemsPerPage=10");
+    PostData.append("currentPage=1&itemsPerPage=1");
 
     //The request is made and the data is printed to the debug console.
     AuthManager->post(ApiRequest, PostData);

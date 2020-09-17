@@ -389,7 +389,7 @@ void EMAGMdiChild::PopulateOrderDetailsViewTable()
 
 void EMAGMdiChild::on_PreviousDayButton_clicked()
 {
-    //REWRITE FOR DATABASE
+    ui->OrderDetailsView->setModel(0);
     EMAGMdiChild::CurrentDate.setDate(EMAGMdiChild::CurrentDate.addDays(-1).year(), EMAGMdiChild::CurrentDate.addDays(-1).month(), EMAGMdiChild::CurrentDate.addDays(-1).day() );
     ui->OrderDateView->setDate(EMAGMdiChild::CurrentDate);
     PopulateOrderViewTable();
@@ -397,7 +397,7 @@ void EMAGMdiChild::on_PreviousDayButton_clicked()
 
 void EMAGMdiChild::on_NextDayButton_clicked()
 {
-    //REWRITE FOR DATABASE
+    ui->OrderDetailsView->setModel(0);
     EMAGMdiChild::CurrentDate.setDate(EMAGMdiChild::CurrentDate.addDays(1).year(), EMAGMdiChild::CurrentDate.addDays(1).month(), EMAGMdiChild::CurrentDate.addDays(1).day() );
     ui->OrderDateView->setDate(EMAGMdiChild::CurrentDate);
     PopulateOrderViewTable();
@@ -405,7 +405,7 @@ void EMAGMdiChild::on_NextDayButton_clicked()
 
 void EMAGMdiChild::on_OrderDateView_userDateChanged(const QDate &date)
 {
-    //REWRITE FOR DATABASE
+    ui->OrderDetailsView->setModel(0);
     EMAGMdiChild::CurrentDate.setDate(date.year(), date.month(), date.day());
     PopulateOrderViewTable();
 }
@@ -429,6 +429,7 @@ void EMAGMdiChild::on_ModifyOrderButton_clicked()
 
 void EMAGMdiChild::on_OrdersView_clicked(const QModelIndex &index)
 {
+    ui->OrderDetailsView->setModel(0);
     qDebug() << ui->OrdersView->model()->data(ui->OrdersView->model()->index(index.row() , 0)).toString();
     EMAGMdiChild::DataBase.open();
     QSqlQueryModel * QueryModel = new QSqlQueryModel;

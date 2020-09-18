@@ -425,6 +425,12 @@ void EMAGMdiChild::on_ModifyOrderButton_clicked()
         DayWithZero.prepend(QString::number(0));
     }
     //REWRITE FOR DATABASE
+    if ()
+    {
+        QMessageBox NoOrderSelected;
+        NoOrderSelected.setText("Intai selectati o comanda");
+        NoOrderSelected.exec();
+    }
 }
 
 void EMAGMdiChild::on_OrdersView_clicked(const QModelIndex &index)
@@ -437,5 +443,6 @@ void EMAGMdiChild::on_OrdersView_clicked(const QModelIndex &index)
     DBQuery.exec( "SELECT * FROM EMAG_ORDERED_PRODUCTS WHERE parent_order_id == " + ui->OrdersView->model()->data(ui->OrdersView->model()->index(index.row() , 0)).toString());
     QueryModel->setQuery(DBQuery);
     ui->OrderDetailsView->setModel(QueryModel);
+
 }
 

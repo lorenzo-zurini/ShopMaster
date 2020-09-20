@@ -424,9 +424,13 @@ void EMAGMdiChild::on_ModifyOrderButton_clicked()
     {
         DayWithZero.prepend(QString::number(0));
     }
+    QItemSelectionModel *select = ui->OrdersView->selectionModel();
+
     //REWRITE FOR DATABASE
-    if ()
-    {
+    if (select->hasSelection() == 1)
+    { emit OrderEdit(QString());
+    }
+        else {
         QMessageBox NoOrderSelected;
         NoOrderSelected.setText("Intai selectati o comanda");
         NoOrderSelected.exec();

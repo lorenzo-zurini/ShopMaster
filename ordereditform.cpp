@@ -6,6 +6,7 @@ OrderEditForm::OrderEditForm(QWidget *parent) :
     ui(new Ui::OrderEditForm)
 {
     ui->setupUi(this);
+
 }
 
 OrderEditForm::~OrderEditForm()

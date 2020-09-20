@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>831</width>
+    <width>1406</width>
     <height>548</height>
    </rect>
   </property>
@@ -115,12 +115,12 @@
        <string>Factura</string>
       </property>
      </widget>
-     <widget class="QToolButton" name="ModifyOrderButton">
+     <widget class="QPushButton" name="ModifyOrderButton">
       <property name="geometry">
        <rect>
         <x>170</x>
         <y>0</y>
-        <width>70</width>
+        <width>71</width>
         <height>20</height>
        </rect>
       </property>
@@ -214,7 +214,11 @@
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QTableView" name="OrderDetailsView"/>
+     <widget class="QTableView" name="OrderDetailsView">
+      <property name="selectionBehavior">
+       <enum>QAbstractItemView::SelectRows</enum>
+      </property>
+     </widget>
     </widget>
    </item>
   </layout>

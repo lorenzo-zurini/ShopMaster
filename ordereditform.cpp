@@ -31,12 +31,23 @@ void OrderEditForm::Populate()
     QDataWidgetMapper * WidgetMapper = new QDataWidgetMapper;
     QSqlQueryModel * QueryModel = new QSqlQueryModel;
     QSqlQuery DBQuery;
-    DBQuery.exec("SELECT * FROM EMAG_ORDERS WHERE ORDER_ID == " + OrderEditForm::OrderID);
+    DBQuery.exec("SELECT * FROM EMAG_ORDERS WHERE id == " + OrderEditForm::OrderID);
     QueryModel->setQuery(DBQuery);
+    WidgetMapper->setModel(0);
     WidgetMapper->setModel(QueryModel);
-    WidgetMapper->addMapping(ui->OrderIDDisplayLabel, 0);
-    WidgetMapper->addMapping(ui->ContactPhoneLineEdit, 1);
+    WidgetMapper->addMapping(ui->BillingNameLineEdit, 40);
+    WidgetMapper->addMapping(ui->BillingCountryLineEdit, 42);
+    WidgetMapper->addMapping(ui->BillingCountyLineEdit, 43);
+    WidgetMapper->addMapping(ui->BillingCityLineEdit, 44);
+    WidgetMapper->addMapping(ui->BillingAdressLineEdit, 45);
+    WidgetMapper->addMapping(ui->ContactNameLineEdit, 47);
+    WidgetMapper->addMapping(ui->ContactPhoneLineEdit, 48);
+    WidgetMapper->addMapping(ui->ContactCountryLineEdit, 49);
+    WidgetMapper->addMapping(ui->ContactCountyLineEdit, 50);
+    WidgetMapper->addMapping(ui->ContactCityLineEdit, 51);
+    WidgetMapper->addMapping(ui->ContactAdressLineEdit, 52);
     WidgetMapper->toFirst();
+    ui->OrderIDDisplayLabel->setText(OrderEditForm::OrderID);
 }
 
 void OrderEditForm::on_CancelButton_clicked()

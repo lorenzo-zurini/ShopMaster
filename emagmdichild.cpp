@@ -424,6 +424,7 @@ void EMAGMdiChild::on_ModifyOrderButton_clicked()
     {
         DayWithZero.prepend(QString::number(0));
     }
+
     QItemSelectionModel *select = ui->OrdersView->selectionModel();
 
     //REWRITE FOR DATABASE

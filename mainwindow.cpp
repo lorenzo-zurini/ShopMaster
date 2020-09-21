@@ -61,6 +61,7 @@ void MainWindow::OrderEdit(QString OrderID)
     OrderEditFormInUse->parentWidget()->setFixedSize(OrderEditFormInUse->parentWidget()->size());
     OrderEditFormInUse->PassDatabase(MainWindow::DataBase);
     OrderEditFormInUse->PassID(OrderID);
+    OrderEditFormInUse->Populate();
     OrderEditFormInUse->show();
 
 }

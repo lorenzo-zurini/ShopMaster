@@ -34,7 +34,8 @@ void OrderEditForm::Populate()
     DBQuery.exec("SELECT * FROM EMAG_ORDERS WHERE ORDER_ID == " + OrderEditForm::OrderID);
     QueryModel->setQuery(DBQuery);
     WidgetMapper->setModel(QueryModel);
-    WidgetMapper->addMapping(ui->OrderIDDisplayLabel, 1);
+    WidgetMapper->addMapping(ui->OrderIDDisplayLabel, 0);
+    WidgetMapper->addMapping(ui->ContactPhoneLineEdit, 1);
     WidgetMapper->toFirst();
 }
 

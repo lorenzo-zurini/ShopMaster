@@ -81,7 +81,7 @@ void EMAGMdiChild::GetEMAGOrders()
 
     //The request is made and the data is printed to the debug console.
     AuthManager->post(ApiRequest, PostData);
-    qDebug() << PostData;
+    // qDebug() << PostData;
 }
 
 void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
@@ -164,7 +164,7 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
         QueryData.append("");   QueryData.append("shipping_locality_id INTEGER");               QueryData.append(")");
 
         DBQuery.exec(QueryData);
-        qDebug().noquote() << QueryData;
+        // qDebug().noquote() << QueryData;
         QueryData.clear();
 
         //THE LINKED ORDERED PRODUCTS TABLE
@@ -190,7 +190,7 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
         QueryData.append("");   QueryData.append("reversible_vat_charging INTEGER");                        QueryData.append(")");
 
         DBQuery.exec(QueryData);
-        qDebug().noquote() << QueryData;
+       // qDebug().noquote() << QueryData;
         QueryData.clear();
 
         for (int i = 0; i < OrdersArray.size(); i++)
@@ -313,7 +313,7 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
             QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["customer"].toObject()["shipping_locality_id"].toInt()));     QueryData.append(")");
 
             DBQuery.exec(QueryData);
-            qDebug().noquote() << QueryData;
+           //  qDebug().noquote() << QueryData;
             QueryData.clear();
 
             for (int j = 0; j < OrdersArray.at(i).toObject()["products"].toArray().size(); j++)
@@ -360,7 +360,7 @@ void EMAGMdiChild::on_AuthRequestComplete(QNetworkReply * AuthReply)
                 QueryData.append("");           QueryData.append(QString::number(OrdersArray.at(i).toObject()["products"].toArray().at(j).toObject()["reversible_vat_charging"].toInt()));  QueryData.append(")");
 
                 DBQuery.exec(QueryData);
-                qDebug().noquote() << QueryData;
+                // qDebug().noquote() << QueryData;
                 QueryData.clear();
             }
         }
@@ -428,9 +428,11 @@ void EMAGMdiChild::on_ModifyOrderButton_clicked()
 
     //REWRITE FOR DATABASE
     if (select->hasSelection() == 1)
-    { emit OrderEdit(QString());
+    {
+        emit OrderEdit(ui->OrdersView->model()->data(ui->OrdersView->model()->index(select->currentIndex().row() , 0)).toString());
     }
-        else {
+        else
+    {
         QMessageBox NoOrderSelected;
         NoOrderSelected.setText("Intai selectati o comanda");
         NoOrderSelected.exec();
@@ -440,7 +442,7 @@ void EMAGMdiChild::on_ModifyOrderButton_clicked()
 void EMAGMdiChild::on_OrdersView_clicked(const QModelIndex &index)
 {
     ui->OrderDetailsView->setModel(0);
-    qDebug() << ui->OrdersView->model()->data(ui->OrdersView->model()->index(index.row() , 0)).toString();
+    // qDebug() << ui->OrdersView->model()->data(ui->OrdersView->model()->index(index.row() , 0)).toString();
     EMAGMdiChild::DataBase.open();
     QSqlQueryModel * QueryModel = new QSqlQueryModel;
     QSqlQuery DBQuery;

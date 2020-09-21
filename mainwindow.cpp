@@ -53,13 +53,16 @@ EMAGMdiChild * MainWindow::CreateEMAGMdiChild()
     return child;
 }
 
-void MainWindow::OrderEdit()
+void MainWindow::OrderEdit(QString OrderID)
 {
     // We create an mdi child and pass the path of the order file to be edited via a public method.
     OrderEditForm * OrderEditFormInUse = MainWindow::CreateOrderEditForm();
     // PASS ORDER ID VIA METHOD
     OrderEditFormInUse->parentWidget()->setFixedSize(OrderEditFormInUse->parentWidget()->size());
+    OrderEditFormInUse->PassDatabase(MainWindow::DataBase);
+    OrderEditFormInUse->PassID(OrderID);
     OrderEditFormInUse->show();
+
 }
 
 OrderEditForm * MainWindow::CreateOrderEditForm()

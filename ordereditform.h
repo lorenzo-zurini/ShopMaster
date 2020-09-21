@@ -6,7 +6,9 @@
 #include <QDebug>
 #include <QSql>
 #include <QSqlDatabase>
-
+#include <QSqlQuery>
+#include <QDataWidgetMapper>
+#include <QSqlQueryModel>
 namespace Ui {
 class OrderEditForm;
 }
@@ -19,7 +21,11 @@ public:
     explicit OrderEditForm(QWidget *parent = nullptr);
     ~OrderEditForm();
 
-    void SetOrderPath(const QString);
+    void PassDatabase(QSqlDatabase DataBase);
+
+    void PassID(const QString OrderID);
+
+    void Populate();
 
 private slots:
     void on_CancelButton_clicked();
@@ -29,9 +35,9 @@ private slots:
 private:
     Ui::OrderEditForm *ui;
 
-    QString OrderPath;
+    QString OrderID;
 
-    QSettings OrderFile;
+    QSqlDatabase DataBase;
 
 };
 

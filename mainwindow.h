@@ -44,7 +44,7 @@ private slots:
 
     void on_actionAutentificare_eMAG_triggered();
 
-    void OrderEdit();
+    void OrderEdit(QString OrderID);
 
 private:
 

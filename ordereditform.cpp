@@ -46,8 +46,10 @@ void OrderEditForm::Populate()
     WidgetMapper->addMapping(ui->ContactCountyLineEdit, 50);
     WidgetMapper->addMapping(ui->ContactCityLineEdit, 51);
     WidgetMapper->addMapping(ui->ContactAdressLineEdit, 52);
+    WidgetMapper->addMapping(ui.Date, )
     WidgetMapper->toFirst();
-    ui->OrderIDDisplayLabel->setText(OrderEditForm::OrderID);
+    //ui->OrderIDDisplayLabel->setText(OrderEditForm::OrderID);
+
 }
 
 void OrderEditForm::on_CancelButton_clicked()

@@ -32,6 +32,9 @@
    <string>Dialog</string>
   </property>
   <widget class="QLineEdit" name="ContactNameLineEdit">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>150</x>
@@ -39,6 +42,9 @@
      <width>231</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="frame">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QLineEdit" name="ContactPhoneLineEdit">
@@ -109,24 +115,6 @@
     <string>ID Comanda</string>
    </property>
   </widget>
-  <widget class="QLabel" name="OrderIDDisplayLabel">
-   <property name="geometry">
-    <rect>
-     <x>150</x>
-     <y>20</y>
-     <width>170</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
   <widget class="QLabel" name="DateLabel">
    <property name="geometry">
     <rect>
@@ -143,24 +131,6 @@
    </property>
    <property name="text">
     <string>Data</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="DateDisplayLabel">
-   <property name="geometry">
-    <rect>
-     <x>150</x>
-     <y>50</y>
-     <width>170</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="ContactNameLabel">
@@ -753,6 +723,38 @@
     </property>
    </widget>
   </widget>
+  <widget class="QLineEdit" name="OrderIdDisplayLineEdit">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>20</y>
+     <width>231</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="frame">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="DateDisplayLineEdit">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>50</y>
+     <width>231</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="frame">
+    <bool>false</bool>
+   </property>
+  </widget>
   <zorder>LegalEntityBillingFrame</zorder>
   <zorder>BillingFrame</zorder>
   <zorder>ContactNameLineEdit</zorder>
@@ -762,9 +764,7 @@
   <zorder>ContactCityLineEdit</zorder>
   <zorder>ContactAdressLineEdit</zorder>
   <zorder>OrderIDLabel</zorder>
-  <zorder>OrderIDDisplayLabel</zorder>
   <zorder>DateLabel</zorder>
-  <zorder>DateDisplayLabel</zorder>
   <zorder>ContactNameLabel</zorder>
   <zorder>ContactPhoneLabel</zorder>
   <zorder>ContactCountryLabel</zorder>
@@ -774,6 +774,8 @@
   <zorder>CancelButton</zorder>
   <zorder>SaveButton</zorder>
   <zorder>ContactDataLabel</zorder>
+  <zorder>OrderIdDisplayLineEdit</zorder>
+  <zorder>DateDisplayLineEdit</zorder>
  </widget>
  <resources/>
  <connections/>

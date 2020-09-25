@@ -28,49 +28,48 @@ void OrderEditForm::PassID(const QString OrderID)
 void OrderEditForm::Populate()
 {
     OrderEditForm::DataBase.open();
-    QDataWidgetMapper * WidgetMapper = new QDataWidgetMapper;
     QSqlQueryModel * QueryModel = new QSqlQueryModel;
     QSqlQuery DBQuery;
     DBQuery.exec("SELECT * FROM EMAG_ORDERS WHERE id == " + OrderEditForm::OrderID);
     DBQuery.next();
     OrderEditForm::IsLegalEntity = DBQuery.value(35).toBool();
     QueryModel->setQuery(DBQuery);
-    WidgetMapper->setModel(0);
-    WidgetMapper->setModel(QueryModel);
+    OrderEditForm::WidgetMapper->setModel(0);
+    OrderEditForm::WidgetMapper->setModel(QueryModel);
 
-    WidgetMapper->addMapping(ui->OrderIdDisplayLineEdit, 0);
-    WidgetMapper->addMapping(ui->DateDisplayLineEdit, 1);
-    WidgetMapper->addMapping(ui->ContactNameLineEdit, 47);
-    WidgetMapper->addMapping(ui->ContactPhoneLineEdit, 48);
-    WidgetMapper->addMapping(ui->ContactCountryLineEdit, 49);
-    WidgetMapper->addMapping(ui->ContactCountyLineEdit, 50);
-    WidgetMapper->addMapping(ui->ContactCityLineEdit, 51);
-    WidgetMapper->addMapping(ui->ContactAdressLineEdit, 52);
+    OrderEditForm::WidgetMapper->addMapping(ui->OrderIdDisplayLineEdit, 0);
+    OrderEditForm::WidgetMapper->addMapping(ui->DateDisplayLineEdit, 1);
+    OrderEditForm::WidgetMapper->addMapping(ui->ContactNameLineEdit, 47);
+    OrderEditForm::WidgetMapper->addMapping(ui->ContactPhoneLineEdit, 48);
+    OrderEditForm::WidgetMapper->addMapping(ui->ContactCountryLineEdit, 49);
+    OrderEditForm::WidgetMapper->addMapping(ui->ContactCountyLineEdit, 50);
+    OrderEditForm::WidgetMapper->addMapping(ui->ContactCityLineEdit, 51);
+    OrderEditForm::WidgetMapper->addMapping(ui->ContactAdressLineEdit, 52);
 
     if (!IsLegalEntity)
 {
     ui->BillingFrame->raise();
-    WidgetMapper->addMapping(ui->BillingNameLineEdit, 40);
-    WidgetMapper->addMapping(ui->BillingCountryLineEdit, 42);
-    WidgetMapper->addMapping(ui->BillingCountyLineEdit, 43);
-    WidgetMapper->addMapping(ui->BillingCityLineEdit, 44);
-    WidgetMapper->addMapping(ui->BillingAdressLineEdit, 45);
+    OrderEditForm::WidgetMapper->addMapping(ui->BillingNameLineEdit, 40);
+    OrderEditForm::WidgetMapper->addMapping(ui->BillingCountryLineEdit, 42);
+    OrderEditForm::WidgetMapper->addMapping(ui->BillingCountyLineEdit, 43);
+    OrderEditForm::WidgetMapper->addMapping(ui->BillingCityLineEdit, 44);
+    OrderEditForm::WidgetMapper->addMapping(ui->BillingAdressLineEdit, 45);
 }
     else
 {
     ui->LegalEntityBillingFrame->raise();
-    WidgetMapper->addMapping(ui->LegalBillingCompanyNameLineEdit, 28);
-    WidgetMapper->addMapping(ui->LegalBillingCIFLineEdit, 30);
-    WidgetMapper->addMapping(ui->LegalBillingNRRCLineEdit, 31);
-    WidgetMapper->addMapping(ui->LegalBillingCountryLineEdit, 42);
-    WidgetMapper->addMapping(ui->LegalBillingCountyLineEdit, 43);
-    WidgetMapper->addMapping(ui->LegalBillingCityLineEdit, 44);
-    WidgetMapper->addMapping(ui->LegalBillingAdressLineEdit, 45);
-    WidgetMapper->addMapping(ui->LegalBillingAccountLineEdit, 33);
+    OrderEditForm::WidgetMapper->addMapping(ui->LegalBillingCompanyNameLineEdit, 28);
+    OrderEditForm::WidgetMapper->addMapping(ui->LegalBillingCIFLineEdit, 30);
+    OrderEditForm::WidgetMapper->addMapping(ui->LegalBillingNRRCLineEdit, 31);
+    OrderEditForm::WidgetMapper->addMapping(ui->LegalBillingCountryLineEdit, 42);
+    OrderEditForm::WidgetMapper->addMapping(ui->LegalBillingCountyLineEdit, 43);
+    OrderEditForm::WidgetMapper->addMapping(ui->LegalBillingCityLineEdit, 44);
+    OrderEditForm::WidgetMapper->addMapping(ui->LegalBillingAdressLineEdit, 45);
+    OrderEditForm::WidgetMapper->addMapping(ui->LegalBillingAccountLineEdit, 33);
 }
 
-    WidgetMapper->toFirst();
-    //ui->OrderIDDisplayLabel->setText(OrderEditForm::OrderID);
+
+    OrderEditForm::WidgetMapper->toFirst();
 
 }
 
@@ -81,6 +80,8 @@ void OrderEditForm::on_CancelButton_clicked()
 
 void OrderEditForm::on_SaveButton_clicked()
 {
+    OrderEditForm::WidgetMapper->submit();
+
     // Add the saving here then refresh the tables via signal.
 
 }

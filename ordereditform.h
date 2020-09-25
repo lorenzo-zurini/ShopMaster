@@ -42,6 +42,8 @@ private:
 
     bool IsLegalEntity;
 
+    QDataWidgetMapper * WidgetMapper = new QDataWidgetMapper;
+
 };
 
 #endif // ORDEREDITFORM_H

@@ -40,6 +40,8 @@ private:
 
     QSqlDatabase DataBase;
 
+    bool IsLegalEntity;
+
 };
 
 #endif // ORDEREDITFORM_H

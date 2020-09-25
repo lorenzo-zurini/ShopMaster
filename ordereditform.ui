@@ -88,6 +88,9 @@
    </property>
   </widget>
   <widget class="QLineEdit" name="ContactAdressLineEdit">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>150</x>
@@ -725,7 +728,7 @@
   </widget>
   <widget class="QLineEdit" name="OrderIdDisplayLineEdit">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="geometry">
     <rect>
@@ -735,13 +738,19 @@
      <height>21</height>
     </rect>
    </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
    <property name="frame">
     <bool>false</bool>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QLineEdit" name="DateDisplayLineEdit">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="geometry">
     <rect>
@@ -751,12 +760,18 @@
      <height>21</height>
     </rect>
    </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
    <property name="frame">
     <bool>false</bool>
    </property>
+   <property name="readOnly">
+    <bool>true</bool>
+   </property>
   </widget>
-  <zorder>LegalEntityBillingFrame</zorder>
   <zorder>BillingFrame</zorder>
+  <zorder>LegalEntityBillingFrame</zorder>
   <zorder>ContactNameLineEdit</zorder>
   <zorder>ContactPhoneLineEdit</zorder>
   <zorder>ContactCountryLineEdit</zorder>

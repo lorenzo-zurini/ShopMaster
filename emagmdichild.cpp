@@ -453,3 +453,9 @@ void EMAGMdiChild::on_OrdersView_clicked(const QModelIndex &index)
 
 }
 
+void EMAGMdiChild::UpdateTables()
+{
+
+    EMAGMdiChild::PopulateOrderViewTable();
+
+}

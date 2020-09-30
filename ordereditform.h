@@ -10,6 +10,7 @@
 #include <QDataWidgetMapper>
 #include <QSqlQueryModel>
 
+
 namespace Ui {
 class OrderEditForm;
 }
@@ -43,6 +44,10 @@ private:
     bool IsLegalEntity;
 
     QDataWidgetMapper * WidgetMapper = new QDataWidgetMapper;
+
+signals:
+
+    void OrderModifySaved();
 
 };
 
